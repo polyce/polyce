@@ -1,10 +1,13 @@
 <dom-module id="home-route">
-    <style>
-        :host {
-
-        }
-    </style>
     <template>
-       Home
+        <style>
+            :host {
+                @apply(--layout-vertical);
+                @apply(--center-center);
+            }
+        </style>
+        <template is="dom-repeat" items="{{data}}">
+            <span>{{item}}</span>
+        </template>
     </template>
 </dom-module>

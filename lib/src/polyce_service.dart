@@ -21,5 +21,5 @@ const service = const Service();
 
 @service
 abstract class PolyceService extends PolyceModel {
-  init();
+  init() {}
 }
