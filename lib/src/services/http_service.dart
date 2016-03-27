@@ -86,7 +86,7 @@ class HttpService extends PolyceService {
 
   HttpResponse _handleResponseBody(HttpResponse res, Type decodeType) {
     if (decodeType != null && res.response?.body != null && data_format == json_format) {
-      res.convertedBody = Serializer.fromJson(res.response?.body, decodeType);
+      res.convertedBody = Polyce.decode(res.response?.body, decodeType);
     }
     return res;
   }

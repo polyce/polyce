@@ -19,6 +19,7 @@ abstract class PolyceRouter {
 
   static attached(PolyceRouter instance) async {
     await init.run(typeFilter: [PolyceRoute]);
+    print(pagesRouter);
     instance.pages = pagesRouter;
   }
 

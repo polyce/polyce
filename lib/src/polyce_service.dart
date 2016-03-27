@@ -4,7 +4,7 @@
 
 part of polyce;
 
-class Service extends Reflectable {
+class Service extends Reflectable  {
   const Service()
       : super.fromList(const [
           invokingCapability,

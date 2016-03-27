@@ -4,7 +4,7 @@
 
 part of polyce;
 
-class ServicesManager {
+class Polyce {
   static reset() {
     _services.clear();
   }
@@ -30,10 +30,18 @@ class ServicesManager {
       service.init();
     });
   }
+
+  static String encode(PolyceModel model) => model?.toJson();
+  static Map encodeToMap(PolyceModel model) => model?.toMap;
+
+  static PolyceModel decode(String json, Type type) => Serializer.fromJson(json, type);
+  static PolyceModel decodeMap(Map map, Type type) => Serializer.fromMap(map, type);
+  static PolyceModel decodeList(List list, Type type) => Serializer.fromList(list, type);
+
 }
 
 initServices() async {
-  ServicesManager.reset();
+  Polyce.reset();
   service.annotatedClasses.forEach((classMirror) {
     if (classMirror != null &&
         classMirror.simpleName != null &&
@@ -43,9 +51,9 @@ initServices() async {
       var instance = service.reflect(obj);
       var ref = instance.reflectee;
       if (ref is PolyceService) {
-        ServicesManager.registerService(classMirror.reflectedType, ref);
+        Polyce.registerService(classMirror.reflectedType, ref);
       }
     }
   });
-  ServicesManager.initAllServices();
+  Polyce.initAllServices();
 }
