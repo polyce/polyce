@@ -1,14 +1,22 @@
 <dom-module id="home-route">
     <template>
-        <h1>Attributes access => {{model.foo}}</h1>
-        <h2>toJson => {{model.toJson}}</h2>
-        <h3>Model List</h3>
+        <h1>Model and Service</h1>
+        <h2>Attributes access => {{model.foo}}</h2>
+        <h3>toJson => {{model.toJson}}</h3>
+        <h4>Model List</h4>
         <template is="dom-repeat" items="{{model.list}}">
             <span>[{{item}}]</span>
         </template>
-        <h3>Service list</h3>
+        <h4>Service list</h4>
         <template is="dom-repeat" items="{{data}}">
             <span>[{{item}}]</span>
         </template>
+
+        <h1>Http request</h1>
+        <h2>userId => {{post.userId}}</h2>
+        <h2>id => {{post.id}}</h2>
+        <h2>title => {{post.title}}</h2>
+        <p>body => {{post.body}}</p>
+        <h3>toJson => {{post.toJson}}</h3>
     </template>
 </dom-module>
