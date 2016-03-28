@@ -31,7 +31,7 @@ class Polyce {
     });
   }
 
-  static String encode(PolyceModel model) => model?.toJson();
+  static String encode(PolyceModel model) => model?.toJson;
   static Map encodeToMap(PolyceModel model) => model?.toMap;
 
   static PolyceModel decode(String json, Type type) => Serializer.fromJson(json, type);

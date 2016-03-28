@@ -5,7 +5,7 @@
 library MyService;
 
 import "package:polyce/polyce.dart";
-import "../data.dart";
+import "../model/data.dart";
 
 @serializable
 @service

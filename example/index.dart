@@ -3,9 +3,7 @@
  */
 
 import "package:polyce/polyce.dart";
-
-import "services/my_service.dart";
-
+import "service/my_service.dart";
 import "root_element/root_element.dart";
 
 main() async {

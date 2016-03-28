@@ -6,8 +6,8 @@
 library home;
 
 import "package:polyce/polyce.dart";
-import "../services/my_service.dart";
-import "../data.dart";
+import "../service/my_service.dart";
+import "../model/data.dart";
 
 @PolyceRoute("Home", "home", isDefault: true)
 @PolymerRegister("home-route")

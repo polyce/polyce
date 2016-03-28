@@ -1,0 +1,14 @@
+<dom-module id="home-route">
+    <template>
+        <h1>Attributes access => {{model.foo}}</h1>
+        <h2>toJson => {{model.toJson}}</h2>
+        <h3>Model List</h3>
+        <template is="dom-repeat" items="{{model.list}}">
+            <span>[{{item}}]</span>
+        </template>
+        <h3>Service list</h3>
+        <template is="dom-repeat" items="{{data}}">
+            <span>[{{item}}]</span>
+        </template>
+    </template>
+</dom-module>

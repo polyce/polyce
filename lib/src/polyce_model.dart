@@ -6,7 +6,8 @@ part of polyce;
 
 @serializable
 abstract class PolyceModel extends Observable {
-  Map get toMap => Serializer.toMap(this);
   String toString() => toMap.toString();
-  String toJson() => Serializer.toJson(this);
+
+  @observable String get toJson => Serializer.toJson(this);
+  @observable Map get toMap => Serializer.toMap(this);
 }

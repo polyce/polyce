@@ -1,33 +1,6 @@
 <dom-module id="root-element">
     <template>
-        <style>
-            :host {
-                display: block;
-                height: 100vh;
-                width: 100vw;
-            }
-        </style>
-        <!-- local DOM for your element -->
-<!--        <paper-drawer-panel id="drawerPanel" responsive-width="1280px" transition>
-            <div class="nav layout vertical" drawer id="nav">&lt;!&ndash; Nav Content &ndash;&gt;
-                <paper-toolbar><span>test_app</span></paper-toolbar>
-                <paper-menu id="menu" valueattr="hash" class="flex" attr-for-selected="hash" selected="{{selected}}">
-                    <template is="dom-repeat" items="{{pages}}">
-                        <paper-item class="menu-item" hash$={{item.name}}><span class="layout horizontal"><span
-                                class="flex">{{item.name}}</span></span></paper-item>
-                    </template>
-                </paper-menu>
-            </div>
-            <paper-header-panel class="main" main mode="waterfall" style="z-index: 0">&lt;!&ndash; Main Toolbar &ndash;&gt;
-                <paper-toolbar>
-                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-                    <div class="flex">{{selected}}</div>
-                </paper-toolbar>&lt;!&ndash; Main Content &ndash;&gt;
-                <div class="content">-->
-                    <polymer-app-router class="flex" selected="{{selected}}" pages="{{pages}}">
-                    </polymer-app-router>
-         <!--       </div>
-            </paper-header-panel>
-        </paper-drawer-panel>-->
+        <polymer-app-router class="flex" selected="{{selected}}" pages="{{pages}}">
+        </polymer-app-router>
     </template>
 </dom-module>

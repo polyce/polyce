@@ -3,8 +3,8 @@ library root_element;
 
 import "dart:async";
 import "package:polyce/polyce.dart";
-import "../home/home.dart";
-import "../services/my_service.dart";
+import "../route/home.dart";
+import "../service/my_service.dart";
 
 @PolymerRegister("root-element")
 class RootElement extends PolymerElement
