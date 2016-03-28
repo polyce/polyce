@@ -1,6 +1,6 @@
 name: polyce
 description: Generation and management of polymer application
-version: 0.0.1
+version: 0.0.3
 author: Hadrien Lejard <hadrien.lejard@gmail.com>
 homepage: https://github.com/walletek/polymer_app
 

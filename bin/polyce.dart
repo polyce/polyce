@@ -37,13 +37,23 @@ void _endProgress() {
 
 createApp(String name, bool isMaterial) async {
   name = toSnakeCase(name);
-  ProcessResult result = await Process.run('git', [
-    'clone',
-    'https://github.com/polyce/app_template${isMaterial ? '_material' : ''}',
-    '-bmaster',
-    '--single-branch',
-    name,
-  ]);
+  output('Cloning template repository', Color.green);
+  _progress();
+  ProcessResult result;
+  try {
+    result = await Process.run('git', [
+      'clone',
+      'https://github.com/polyce/app_template${isMaterial ? '_material' : ''}',
+      '-bmaster',
+      '--single-branch',
+      name,
+    ]);
+  } catch (e) {
+    output('\n••• Couldn\'t run git clone', Color.red);
+  }
+
+  _endProgress();
+
 
   if (result.exitCode != 0) {
     output('${result.stderr}\n', Color.red);
@@ -59,20 +69,20 @@ createApp(String name, bool isMaterial) async {
     exit(1);
   }
 
-  output('Creating $name', Color.green);
+  output('Running Pub Get', Color.green);
 
   _progress();
 
   try {
     await Process.run('pub', ['get']);
   } catch (e) {
-    output('\n••• Couldn\'t run pub get', Color.yellow);
+    output('\n••• Couldn\'t run pub get', Color.red);
   }
 
   _endProgress();
 
   output('Hint: cd $name && pub serve\n',
-      Color.blue);
+      Color.grey);
 
   return 0;
 }
