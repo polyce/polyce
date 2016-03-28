@@ -20,6 +20,7 @@ class Service extends Reflectable  {
 const service = const Service();
 
 @service
+@serializable
 abstract class PolyceService extends PolyceModel {
   init() {}
 }

@@ -5,9 +5,15 @@
 library MyService;
 
 import "package:polyce/polyce.dart";
+import "../data.dart";
 
 @serializable
 @service
 class MyService extends PolyceService {
-  @observable List<String> data = ["toto", "titi", "tata"];
+  @observable List<String> data = new ObservableList.from(["toto", "titi", "tata"]);
+  @observable Data model;
+
+  init() {
+    model = new Data();
+  }
 }

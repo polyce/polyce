@@ -5,7 +5,7 @@
 part of polyce;
 
 @serializable
-abstract class PolyceModel extends JsProxy with Observable {
+abstract class PolyceModel extends Observable {
   Map get toMap => Serializer.toMap(this);
   String toString() => toMap.toString();
   String toJson() => Serializer.toJson(this);
