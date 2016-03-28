@@ -4,6 +4,7 @@ library root_element;
 import "dart:async";
 import "package:polyce/polyce.dart";
 import "../route/home.dart";
+import "../route/http.dart";
 import "../service/my_service.dart";
 
 @PolymerRegister("root-element")
@@ -22,11 +23,14 @@ class RootElement extends PolymerElement
     }
   }
 
-  MyService get service => Polyce.getService(MyService);
-
-  ready() {
-    new Timer(const Duration(seconds: 3), () {
-      service?.data?.addAll([ "truc", "plop", "test"]);
-    });
+  @reflectable
+  home(event, [_]) {
+    PolyceRouter.goToName("Home");
   }
+
+  @reflectable
+  http(event, [_]) {
+    PolyceRouter.goToName("Http");
+  }
+
 }
