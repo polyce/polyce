@@ -34,7 +34,6 @@ part "src/polyce_router.dart";
 part "src/polyce_service.dart";
 part "src/manager.dart";
 part "src/services/http_service.dart";
-part "src/utils.dart";
 
 
 initPolyce() async {

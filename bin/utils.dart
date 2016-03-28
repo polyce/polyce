@@ -2,12 +2,6 @@
  * Created by lejard_h on 23/12/15.
  */
 
-part of polyce;
-
-String green(String value) => "<green>$value</green>";
-String white(String value) => "<white>$value</white>";
-String red(String value) => "<red>$value</red>";
-
 toSnakeCase(String name) => name
     ?.replaceAll("-", "_")
     ?.replaceAll(" ", "_")
