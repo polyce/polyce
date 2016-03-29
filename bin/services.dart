@@ -4,24 +4,23 @@
 
 import "utils.dart";
 
-final String service_library_path_default = "./lib/services";
-String service_library_path = service_library_path_default;
+final String library_path_default = "./lib/services";
+String library_path = library_path_default;
 
 create(String name, [String content]) async {
   name = toSnakeCase(name);
   if (content == null) {
     content = serviceDartTemplate(name);
   }
-  await writeInDartFile(
-      "$service_library_path/${toSnakeCase(name)}.dart", content);
-  if (service_library_path == service_library_path_default) {
-    addToLibrary("${toSnakeCase(name)}.dart", "$service_library_path/services.dart");
+  await writeInDartFile("$library_path/${toSnakeCase(name)}.dart", content);
+  if (library_path == library_path_default) {
+    addToLibrary("${toSnakeCase(name)}.dart", "$library_path/services.dart");
   }
 }
 
 serviceDartTemplate(String name) => '''
     library services.${toSnakeCase(name)};
-        import '../polyce_app.dart';
+        import 'package:polyce_app/polyce_app.dart';
         @serializable
         @service
         class ${toCamelCase(name)} extends PolyceService {

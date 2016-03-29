@@ -85,7 +85,6 @@ void output(String input, Color color) {
 }
 
 addToLibrary(String name, [String path = "library.dart"]) {
-  //print("Add ${green(name)} to library.\n");
   File lib = new File(path);
   if (!lib.existsSync()) {
     writeInFile(path, "library $name;\n");

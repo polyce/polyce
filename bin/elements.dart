@@ -4,8 +4,8 @@
 
 import "utils.dart";
 
-final String elements_library_path_default = "./lib/elements";
-String elements_library_path = elements_library_path_default;
+final String library_path_default = "./lib/elements";
+String library_path = library_path_default;
 
 create(String name,
     [String dartContent,
@@ -29,24 +29,24 @@ create(String name,
     cssContent = _elementCssTemplate(name);
   }
   await writeInDartFile(
-      "$elements_library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
+      "$library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
       dartContent);
   await writeInFile(
-      "$elements_library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
+      "$library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
       htmlContent);
   await writeInFile(
-      "$elements_library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
+      "$library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
       cssContent);
 
-  if (elements_library_path == elements_library_path_default) {
-    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "$elements_library_path/elements.dart");
+  if (library_path == library_path_default) {
+    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "$library_path/elements.dart");
   }
 }
 
 _elementDartTemplate(String name) => '''
     @HtmlImport('${toSnakeCase(name)}.html')
     library elements.${toSnakeCase(name)};
-    import '../../polyce_app.dart';
+    import 'package:polyce_app/polyce_app.dart';
     @PolymerRegister('${toLispCase(name)}')
     class ${toCamelCase(name)} extends PolymerElement with AutonotifyBehavior, Observable {
     ${toCamelCase(name)}.created() : super.created();

@@ -9,6 +9,7 @@ import "utils.dart";
 
 import "elements.dart" as element;
 import "services.dart" as service;
+import "behaviors.dart" as behavior;
 
 StreamSubscription _progressSubscription;
 
@@ -81,15 +82,24 @@ main(List<String> args) async {
         "element",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: element.elements_library_path_default))
+              abbr: "p", defaultsTo: element.library_path_default))
     ..addCommand(
         "service",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: service.service_library_path_default))
-    ..addCommand("behavior")
-    ..addCommand("model")
-    ..addCommand("route");
+              abbr: "p", defaultsTo: service.library_path_default))
+    ..addCommand("behavior",
+        new ArgParser()
+          ..addOption("path",
+              abbr: "p", defaultsTo: behavior.library_path_default))
+    ..addCommand("model",
+        new ArgParser()
+          ..addOption("path",
+              abbr: "p", defaultsTo: service.library_path_default))
+    ..addCommand("route",
+        new ArgParser()
+          ..addOption("path",
+              abbr: "p", defaultsTo: service.library_path_default));
 
   ArgResults results = parser.parse(args);
 
@@ -101,7 +111,7 @@ main(List<String> args) async {
       if (results.command.arguments.isEmpty) {
         print(parser.usage);
       } else {
-        element.elements_library_path = results.command["path"];
+        element.library_path = results.command["path"];
         return element.create(results.command.arguments[0]);
       }
       break;
@@ -109,9 +119,19 @@ main(List<String> args) async {
       if (results.command.arguments.isEmpty) {
         print(parser.usage);
       } else {
-        service.service_library_path = results.command["path"];
+        service.library_path = results.command["path"];
         return service.create(results.command.arguments[0]);
       }
       break;
+    case "behavior":
+      if (results.command.arguments.isEmpty) {
+        print(parser.usage);
+      } else {
+        behavior.library_path = results.command["path"];
+        return behavior.create(results.command.arguments[0]);
+      }
+      break;
+    default:
+      print(parser.usage);
   }
 }
