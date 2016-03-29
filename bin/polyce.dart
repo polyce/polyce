@@ -4,6 +4,7 @@
 
 import 'dart:io';
 import 'dart:async';
+import "dart:convert";
 import "package:args/args.dart";
 import "utils.dart";
 
@@ -77,79 +78,133 @@ createApp(String name, bool isMaterial) async {
   return 0;
 }
 
+initOptions() {
+  File options_file = new File("app.options.json");
+  if (options_file.existsSync()) {
+    options = JSON.decode(options_file.readAsStringSync());
+  } else {
+    output("Can't find 'app.options.json' file\n", Color.gray);
+  }
+}
+
 main(List<String> args) async {
+  initOptions();
   ArgParser parser = new ArgParser()
-    ..addCommand("app", new ArgParser()..addFlag("material", defaultsTo: true))
+    ..addCommand(
+        "app",
+        new ArgParser()
+          ..addFlag("material",
+              defaultsTo: true,
+              help: "Generate a Material Design Application",
+              negatable: true))
     ..addCommand(
         "element",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: element.library_path_default))
+              abbr: "p",
+              defaultsTo: options != null
+                  ? options["elements"]
+                  : element.library_path_default))
     ..addCommand(
         "service",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: service.library_path_default))
-    ..addCommand("behavior",
+              abbr: "p",
+              defaultsTo: options != null
+                  ? options["services"]
+                  : service.library_path_default))
+    ..addCommand(
+        "behavior",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: behavior.library_path_default))
-    ..addCommand("model",
+              abbr: "p",
+              defaultsTo: options != null
+                  ? options["behaviors"]
+                  : behavior.library_path_default))
+    ..addCommand(
+        "model",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: model.library_path_default))
-    ..addCommand("route",
+              abbr: "p",
+              defaultsTo: options != null
+                  ? options["models"]
+                  : model.library_path_default))
+    ..addCommand(
+        "route",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: route.library_path_default));
+              abbr: "p",
+              defaultsTo: options != null
+                  ? options["routes_elements"]
+                  : route.library_path_default));
 
   ArgResults results = parser.parse(args);
 
   switch (results?.command?.name) {
     case "app":
-      return createApp(results.command.arguments[0] ?? "polyce_app",
-          results.command['material']);
+      if (results.command.rest.isEmpty) {
+        print(usage);
+      } else {
+        return createApp(results.command.rest[0] ?? "polyce_app",
+            results.command['material']);
+      }
+      break;
+
     case "element":
-      if (results.command.arguments.isEmpty) {
-        print(parser.usage);
+      if (results.command.rest.isEmpty) {
+        print(usage);
       } else {
         element.library_path = results.command["path"];
-        return element.create(results.command.arguments[0]);
+        return element.create(results.command.rest[0]);
       }
       break;
     case "service":
-      if (results.command.arguments.isEmpty) {
-        print(parser.usage);
+      if (results.command.rest.isEmpty) {
+        print(usage);
       } else {
         service.library_path = results.command["path"];
-        return service.create(results.command.arguments[0]);
+        return service.create(results.command.rest[0]);
       }
       break;
     case "behavior":
-      if (results.command.arguments.isEmpty) {
-        print(parser.usage);
+      if (results.command.rest.isEmpty) {
+        print(usage);
       } else {
         behavior.library_path = results.command["path"];
-        return behavior.create(results.command.arguments[0]);
+        return behavior.create(results.command.rest[0]);
       }
       break;
     case "model":
-      if (results.command.arguments.isEmpty) {
-        print(parser.usage);
+      if (results.command.rest.isEmpty) {
+        print(usage);
       } else {
         model.library_path = results.command["path"];
-        return model.create(results.command.arguments[0]);
+        return model.create(results.command.rest[0]);
       }
       break;
     case "route":
-      if (results.command.arguments.length < 2) {
-        print(parser.usage);
+      if (results.command.rest.length < 2) {
+        print(usage);
       } else {
-        model.library_path = results.command["path"];
-        return route.create(results.command.arguments[0], results.command.arguments[1]);
+        route.library_path = results.command["path"];
+        return route.create(results.command.rest[0], results.command.rest[1]);
       }
       break;
     default:
-      print(parser.usage);
+      print(usage);
   }
 }
+
+Map options;
+
+String get usage => '''
+polyce  app      --[no]-material [name]
+        element  --path=(default: "." or define in app.options.json) [name]
+        route    --path=(default: "." or define in app.options.json) [name] [path]
+        model    --path=(default: "." or define in app.options.json) [name]
+        service  --path=(default: "." or define in app.options.json) [name]
+        behavior --path=(default: "." or define in app.options.json) [name]
+
+If 'app.options.json' is present in your current folder,
+the generated component will be automatically add to his library specified in the options file.
+''';

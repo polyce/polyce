@@ -2,9 +2,10 @@
  * Created by lejard_h on 24/12/15.
  */
 
+import "polyce.dart";
 import "utils.dart";
 
-final String library_path_default = "./lib/elements";
+final String library_path_default = ".";
 String library_path = library_path_default;
 
 create(String name,
@@ -37,7 +38,7 @@ create(String name,
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
       cssContent);
 
-  if (library_path == library_path_default) {
+  if (library_path == (options != null ? options["elements"] : null)) {
     addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "$library_path/elements.dart");
   }
 }

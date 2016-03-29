@@ -3,9 +3,10 @@
  */
 
 import "utils.dart";
+import "polyce.dart";
 import "elements.dart" as element;
 
-final String library_path_default = "./lib/routes_elements";
+final String library_path_default = ".";
 String library_path = library_path_default;
 
 create(String name, String path,
@@ -37,10 +38,10 @@ create(String name, String path,
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
       cssTemplate);
 
-  if (library_path == library_path_default) {
-    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "$library_path/routes_elements.dart");
+  if (library_path == (options != null ? options["routes_elements"] : null)) {
+    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
+        "$library_path/routes_elements.dart");
   }
-
 }
 
 _notEmptyButNull(String value) {

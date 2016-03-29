@@ -2,9 +2,10 @@
  * Created by lejard_h on 24/12/15.
  */
 
+import "polyce.dart";
 import "utils.dart";
 
-final String library_path_default = "./lib/services";
+final String library_path_default = ".";
 String library_path = library_path_default;
 
 create(String name, [String content]) async {
@@ -12,8 +13,9 @@ create(String name, [String content]) async {
   if (content == null) {
     content = serviceDartTemplate(name);
   }
-  await writeInDartFile("${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
-  if (library_path == library_path_default) {
+  await writeInDartFile(
+      "${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
+  if (library_path == (options != null ? options["services"] : null)) {
     addToLibrary("${toSnakeCase(name)}.dart", "$library_path/services.dart");
   }
 }
