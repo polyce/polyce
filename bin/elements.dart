@@ -14,7 +14,6 @@ create(String name,
     String innerHtmlContent = ""]) async {
 
   name = toSnakeCase(name);
-  print(name);
   if (name == null || !name.contains("_")) {
     throw "The element name is invalid";
   }

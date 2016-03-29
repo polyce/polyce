@@ -10,6 +10,7 @@ import "utils.dart";
 import "elements.dart" as element;
 import "services.dart" as service;
 import "behaviors.dart" as behavior;
+import "models.dart" as model;
 
 StreamSubscription _progressSubscription;
 
@@ -95,7 +96,7 @@ main(List<String> args) async {
     ..addCommand("model",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: service.library_path_default))
+              abbr: "p", defaultsTo: model.library_path_default))
     ..addCommand("route",
         new ArgParser()
           ..addOption("path",
@@ -129,6 +130,14 @@ main(List<String> args) async {
       } else {
         behavior.library_path = results.command["path"];
         return behavior.create(results.command.arguments[0]);
+      }
+      break;
+    case "model":
+      if (results.command.arguments.isEmpty) {
+        print(parser.usage);
+      } else {
+        model.library_path = results.command["path"];
+        return model.create(results.command.arguments[0]);
       }
       break;
     default:

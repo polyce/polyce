@@ -93,4 +93,5 @@ addToLibrary(String name, [String path = "library.dart"]) {
   lib.writeAsStringSync(
       "export '$name';\n",
       mode: FileMode.APPEND);
+  output("Add to library '$path'.\n", Color.yellow);
 }
