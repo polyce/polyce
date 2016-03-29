@@ -11,6 +11,7 @@ import "elements.dart" as element;
 import "services.dart" as service;
 import "behaviors.dart" as behavior;
 import "models.dart" as model;
+import "routes.dart" as route;
 
 StreamSubscription _progressSubscription;
 
@@ -100,7 +101,7 @@ main(List<String> args) async {
     ..addCommand("route",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: service.library_path_default));
+              abbr: "p", defaultsTo: route.library_path_default));
 
   ArgResults results = parser.parse(args);
 
@@ -138,6 +139,14 @@ main(List<String> args) async {
       } else {
         model.library_path = results.command["path"];
         return model.create(results.command.arguments[0]);
+      }
+      break;
+    case "route":
+      if (results.command.arguments.length < 2) {
+        print(parser.usage);
+      } else {
+        model.library_path = results.command["path"];
+        return route.create(results.command.arguments[0], results.command.arguments[1]);
       }
       break;
     default:

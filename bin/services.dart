@@ -12,7 +12,7 @@ create(String name, [String content]) async {
   if (content == null) {
     content = serviceDartTemplate(name);
   }
-  await writeInDartFile("$library_path/${toSnakeCase(name)}.dart", content);
+  await writeInDartFile("${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
   if (library_path == library_path_default) {
     addToLibrary("${toSnakeCase(name)}.dart", "$library_path/services.dart");
   }

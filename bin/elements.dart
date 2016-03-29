@@ -19,22 +19,22 @@ create(String name,
   }
 
   if (dartContent == null) {
-    dartContent = _elementDartTemplate(name);
+    dartContent = elementDartTemplate(name);
   }
   if (htmlContent == null) {
-    htmlContent = _elementHtmlTemplate(name, innerHtmlContent);
+    htmlContent = elementHtmlTemplate(name, innerHtmlContent);
   }
   if (cssContent == null) {
-    cssContent = _elementCssTemplate(name);
+    cssContent = elementCssTemplate(name);
   }
   await writeInDartFile(
-      "$library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
+      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
       dartContent);
   await writeInFile(
-      "$library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
+      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
       htmlContent);
   await writeInFile(
-      "$library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
+      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
       cssContent);
 
   if (library_path == library_path_default) {
@@ -42,7 +42,7 @@ create(String name,
   }
 }
 
-_elementDartTemplate(String name) => '''
+elementDartTemplate(String name) => '''
     @HtmlImport('${toSnakeCase(name)}.html')
     library elements.${toSnakeCase(name)};
     import 'package:polyce_app/polyce_app.dart';
@@ -69,7 +69,7 @@ _elementDartTemplate(String name) => '''
     }
     ''';
 
-_elementHtmlTemplate(String name, [String innerContent = ""]) => '''
+elementHtmlTemplate(String name, [String innerContent = ""]) => '''
     <dom-module id="${toLispCase(name)}">
     <link rel="import" type="css" href="${toSnakeCase(name)}.css">
     <template>
@@ -79,7 +79,7 @@ _elementHtmlTemplate(String name, [String innerContent = ""]) => '''
     </dom-module>
     ''';
 
-_elementCssTemplate(String name) => '''
+elementCssTemplate(String name) => '''
   :host {
     font-family: 'Roboto', 'Noto', sans-serif;
     font-weight: 300;

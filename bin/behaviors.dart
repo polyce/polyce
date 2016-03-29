@@ -12,7 +12,7 @@ create(String name, [String content]) async {
   if (content == null) {
     content = behaviorDartTemplate(name);
   }
-  await writeInDartFile("$library_path/${toSnakeCase(name)}.dart", content);
+  await writeInDartFile("${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
 
   if (library_path_default == library_path) {
     addToLibrary("${toSnakeCase(name)}.dart", "$library_path/behaviors.dart");
