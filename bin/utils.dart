@@ -25,20 +25,16 @@ toCamelCase(String str) => toLispCase(str)?.split('-')?.map((e) {
       return e[0].toUpperCase() + e.substring(1);
     })?.join('');
 
-String green(String value) => "<green>$value</green>";
-String white(String value) => "<white>$value</white>";
-String red(String value) => "<red>$value</red>";
-
 Future<Directory> createDirectory(String path) async {
   Directory dir = new Directory(path);
   if (!dir.existsSync()) {
     await dir.create(recursive: true);
   }
   if (dir.existsSync()) {
-    print("Creating '${white(path)}' directory. ${green("Success")}");
+    output("'$path' directory created.\n", Color.green);
   } else {
-    print("Creating '${white(path)}' directory. ${red("Fail")}");
-    throw "Impossible to create directory ${white(path)}";
+    output("Fail to create '$path' directory.\n", Color.red);
+    throw "Impossible to create directory $path}";
   }
   return dir;
 }
@@ -49,10 +45,10 @@ Future<File> createFile(String path) async {
     await file.create(recursive: true);
   }
   if (file.existsSync()) {
-    print("Creating '${white(path)}' file. ${green("Success")}");
+    output("'$path' file created.\n", Color.green);
   } else {
-    print("Creating '${white(path)}' file. ${red("Fail")}");
-    throw "Impossible to create file ${white(path)}";
+    output("Fail to create '$path' file.\n", Color.red);
+    throw "Impossible to create file $path";
   }
   return file;
 }
@@ -96,6 +92,6 @@ addToLibrary(String name, [String path = "library.dart"]) {
   }
 
   lib.writeAsStringSync(
-      "export '${toSnakeCase(name)}/${toSnakeCase(name)}.dart';\n",
+      "export '$name';\n",
       mode: FileMode.APPEND);
 }

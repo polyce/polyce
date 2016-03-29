@@ -4,7 +4,8 @@
 
 import "utils.dart";
 
-String elements_library_path = "./lib/elements";
+final String elements_library_path_default = "./lib/elements";
+String elements_library_path = elements_library_path_default;
 
 create(String name,
     [String dartContent,
@@ -37,7 +38,9 @@ create(String name,
       "$elements_library_path/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
       cssContent);
 
-  addToLibrary(name, "$elements_library_path/elements.dart");
+  if (elements_library_path == elements_library_path_default) {
+    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "$elements_library_path/elements.dart");
+  }
 }
 
 _elementDartTemplate(String name) => '''

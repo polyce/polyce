@@ -8,6 +8,7 @@ import "package:args/args.dart";
 import "utils.dart";
 
 import "elements.dart" as element;
+import "services.dart" as service;
 
 StreamSubscription _progressSubscription;
 
@@ -75,16 +76,17 @@ createApp(String name, bool isMaterial) async {
 
 main(List<String> args) async {
   ArgParser parser = new ArgParser()
-    ..addCommand(
-        "app",
-        new ArgParser()
-          ..addFlag("material", defaultsTo: true))
+    ..addCommand("app", new ArgParser()..addFlag("material", defaultsTo: true))
     ..addCommand(
         "element",
         new ArgParser()
           ..addOption("path",
-              abbr: "p", defaultsTo: element.elements_library_path))
-    ..addCommand("service")
+              abbr: "p", defaultsTo: element.elements_library_path_default))
+    ..addCommand(
+        "service",
+        new ArgParser()
+          ..addOption("path",
+              abbr: "p", defaultsTo: service.service_library_path_default))
     ..addCommand("behavior")
     ..addCommand("model")
     ..addCommand("route");
@@ -93,13 +95,22 @@ main(List<String> args) async {
 
   switch (results?.command?.name) {
     case "app":
-      return createApp(results.command.arguments[0] ?? "polyce_app", results.command['material']);
+      return createApp(results.command.arguments[0] ?? "polyce_app",
+          results.command['material']);
     case "element":
-      if (results.command.arguments[0] == null) {
+      if (results.command.arguments.isEmpty) {
         print(parser.usage);
-
       } else {
+        element.elements_library_path = results.command["path"];
         return element.create(results.command.arguments[0]);
+      }
+      break;
+    case "service":
+      if (results.command.arguments.isEmpty) {
+        print(parser.usage);
+      } else {
+        service.service_library_path = results.command["path"];
+        return service.create(results.command.arguments[0]);
       }
       break;
   }
