@@ -7,19 +7,7 @@ import 'dart:async';
 import "package:args/args.dart";
 import "utils.dart";
 
-enum Color { blue, red, yellow, gray, green, white}
-
-int _colorId(Color color) =>
-    {Color.blue: 34, Color.red: 31, Color.yellow: 33, Color.gray: 90, Color.green: 32, Color.white: 0}[color];
-
-String _colorize(String input, Color color) {
-  return '\u001b[${_colorId(color)}m$input\u001b[39m';
-}
-
-void output(String input, Color color) {
-  if (Platform.isWindows) stdout.write(input);
-  stdout.write(_colorize(input, color));
-}
+import "elements.dart" as element;
 
 StreamSubscription _progressSubscription;
 
@@ -54,7 +42,6 @@ createApp(String name, bool isMaterial) async {
 
   _endProgress();
 
-
   if (result.exitCode != 0) {
     output('${result.stderr}\n', Color.red);
     exit(1);
@@ -81,8 +68,7 @@ createApp(String name, bool isMaterial) async {
 
   _endProgress();
 
-  output('Hint: cd $name && pub serve\n',
-      Color.grey);
+  output('Hint: cd $name && pub serve\n', Color.gray);
 
   return 0;
 }
@@ -92,9 +78,12 @@ main(List<String> args) async {
     ..addCommand(
         "app",
         new ArgParser()
-          ..addFlag("material", defaultsTo: true)
-          ..addOption("name", defaultsTo: "polyce_app", abbr: "n"))
-    ..addCommand("element")
+          ..addFlag("material", defaultsTo: true))
+    ..addCommand(
+        "element",
+        new ArgParser()
+          ..addOption("path",
+              abbr: "p", defaultsTo: element.elements_library_path))
     ..addCommand("service")
     ..addCommand("behavior")
     ..addCommand("model")
@@ -104,6 +93,14 @@ main(List<String> args) async {
 
   switch (results?.command?.name) {
     case "app":
-      return createApp(results.command['name'], results.command['material']);
+      return createApp(results.command.arguments[0] ?? "polyce_app", results.command['material']);
+    case "element":
+      if (results.command.arguments[0] == null) {
+        print(parser.usage);
+
+      } else {
+        return element.create(results.command.arguments[0]);
+      }
+      break;
   }
 }
