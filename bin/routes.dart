@@ -17,13 +17,12 @@ create(String name, String path,
     bool isAbstract,
     String redirectTo,
     String parent}) async {
-  String routeName = name;
   name = toSnakeCase(name);
   if (dartTemplate == null) {
-    dartTemplate = routeDartTemplate(name, routeName, path, isDefault,
+    dartTemplate = routeDartTemplate(name, "${name}Route", path, isDefault,
         isAbstract: isAbstract, parent: parent, redirectTo: redirectTo);
   }
-  htmlTemplate = element.elementHtmlTemplate(name, htmlTemplate ?? "");
+  htmlTemplate = element.elementHtmlTemplate("${name}-route", htmlTemplate ?? "");
   if (cssTemplate == null) {
     cssTemplate = element.elementCssTemplate(name);
   }
