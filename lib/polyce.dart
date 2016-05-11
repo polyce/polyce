@@ -37,7 +37,7 @@ part "src/services/http_service.dart";
 
 
 initPolyce() async {
-    await initSerializer(max_superclass: PolyceModel);
+    await initSerializer();
     await initServices();
     await initPolymer();
 }

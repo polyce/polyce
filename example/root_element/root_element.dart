@@ -1,11 +1,7 @@
 @HtmlImport("root_element.html")
 library root_element;
 
-import "dart:async";
 import "package:polyce/polyce.dart";
-import "../route/home.dart";
-import "../route/http.dart";
-import "../service/my_service.dart";
 
 @PolymerRegister("root-element")
 class RootElement extends PolymerElement
