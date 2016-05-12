@@ -43,10 +43,8 @@ class Polyce {
 initServices() async {
   Polyce.reset();
   service.annotatedClasses.forEach((classMirror) {
-    if (classMirror != null &&
-        classMirror.simpleName != null &&
-        classMirror.reflectedType != PolyceModel &&
-        !classMirror.isAbstract) {
+    if (!classMirror.isAbstract &&
+        classMirror.reflectedType != PolyceModel) {
       var obj = classMirror.newInstance('', []);
       var instance = service.reflect(obj);
       var ref = instance.reflectee;
