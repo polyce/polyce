@@ -14,8 +14,21 @@ class HttpResponse {
 }
 
 @serializable
-@service
 class HttpService extends PolyceService {
+
+  static HttpService _instance;
+
+  HttpService._constructor() : super.constructor() {
+
+  }
+
+  factory HttpService() {
+    if (_instance == null) {
+      _instance = new HttpService._constructor();
+    }
+    return _instance;
+  }
+
   static String data_format = json_format;
 
   BrowserClient _http = new BrowserClient();
@@ -110,5 +123,5 @@ class HttpService extends PolyceService {
     return uri;
   }
 
-  init() {}
+  initialize() {}
 }

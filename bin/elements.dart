@@ -46,7 +46,7 @@ create(String name,
 elementDartTemplate(String name) => '''
     @HtmlImport('${toSnakeCase(name)}.html')
     library elements.${toSnakeCase(name)};
-    import 'package:polyce_app/polyce_app.dart';
+    import 'package:polyce/polyce.dart';
     @PolymerRegister('${toLispCase(name)}')
     class ${toCamelCase(name)} extends PolymerElement with AutonotifyBehavior, Observable {
     ${toCamelCase(name)}.created() : super.created();

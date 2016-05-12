@@ -55,7 +55,7 @@ routeDartTemplate(String name, String routeName, String path, bool isDefault,
     '''
       @HtmlImport("${toSnakeCase(name)}.html")
       library route_elements.${toSnakeCase(name)};
-      import "package:polyce_app/polyce_app.dart";
+      import "package:polyce/polyce.dart";
       @PolyceRoute("${toCamelCase(routeName)}", "$path", isDefault: $isDefault,
       isAbstract: $isAbstract, parent: ${_notEmptyButNull(toCamelCase(parent))}, redirectTo: ${_notEmptyButNull(toCamelCase(redirectTo))})
       @PolymerRegister("${toLispCase(name)}")

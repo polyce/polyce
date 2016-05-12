@@ -19,8 +19,14 @@ class Service extends Reflectable  {
 
 const service = const Service();
 
-@service
 @serializable
 abstract class PolyceService extends PolyceModel {
-  init() {}
+
+  PolyceService.constructor() {
+    Polyce.registerService(this.runtimeType, this);
+    initialize();
+  }
+
+  Future initialize();
+
 }

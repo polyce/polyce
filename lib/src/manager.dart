@@ -27,7 +27,7 @@ class Polyce {
 
   static initAllServices() {
     _services.forEach((type, PolyceService service) {
-      service.init();
+      service.initialize();
     });
   }
 
@@ -37,6 +37,8 @@ class Polyce {
   static PolyceModel decode(String json, Type type) => Serializer.fromJson(json, type);
   static PolyceModel decodeMap(Map map, Type type) => Serializer.fromMap(map, type);
   static List<PolyceModel> decodeList(List list, Type type) => Serializer.fromList(list, type);
+
+  static final HttpService http_service = new HttpService();
 
 }
 

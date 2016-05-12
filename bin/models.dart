@@ -23,7 +23,7 @@ create(String name, {String content}) async {
 
 modelDartTemplate(String name) => '''
       library models.${toSnakeCase(name)};
-      import "package:polyce_app/polyce_app.dart";
+      import "package:polyce/polyce.dart";
       /// @serializable specify that ${toCamelCase(name)} can be serialize/deserialize by polymer_app
       @serializable
       class ${toCamelCase(name)} extends PolyceModel {

@@ -22,14 +22,28 @@ create(String name, [String content]) async {
 
 serviceDartTemplate(String name) => '''
     library services.${toSnakeCase(name)};
-        import 'package:polyce_app/polyce_app.dart';
+        import 'package:polyce/polyce.dart';
         @serializable
-        @service
         class ${toCamelCase(name)} extends PolyceService {
-        HttpService http = Polyce.getService(HttpService);
+        HttpService get http => Polyce.http_service;
         @observable String foo = "bar";
-        init() {
-        print("init ${toCamelCase(name)}");
+
+        static ${toCamelCase(name)} _instance;
+
+        ${toCamelCase(name)}._constructor() : super._constructor();
+
+        factory ${toCamelCase(name)}() {
+          if (_instance == null) {
+            _instance = new ${toCamelCase(name)}._init();
+          }
+          return _instance;
         }
+
+        initialize() {
+
         }
+
+        }
+
+        final ${toCamelCase(name)} ${toSnakeCase(name)} = new ${toCamelCase(name)}();
         ''';
