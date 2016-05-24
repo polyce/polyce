@@ -35,6 +35,8 @@ part "src/polyce_service.dart";
 part "src/manager.dart";
 part "src/services/http_service.dart";
 
+
+@Deprecated("user initPolymer")
 initPolyce() async {
     await initServices();
     await initPolymer();
