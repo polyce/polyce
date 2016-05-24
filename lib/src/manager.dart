@@ -27,7 +27,6 @@ class Polyce {
 
   static initAllServices() async {
     await _services.forEach((type, PolyceService service) async {
-      print(type);
       await service.initialize();
     });
   }
