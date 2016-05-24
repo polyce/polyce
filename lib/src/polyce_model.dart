@@ -5,9 +5,16 @@
 part of polyce;
 
 @serializable
-abstract class PolyceModel extends Observable {
-  String toString() => toMap.toString();
+abstract class PolyceModel extends Observable with Serialize {
 
-  @observable String get toJson => Serializer.toJson(this);
-  @observable Map get toMap => Serializer.toMap(this);
+  static Serializer serializer = Polyce.serializer;
+
+  @override
+  String toString() => toMap().toString();
+
+  @override
+  String encode() => PolyceModel.serializer.encode(this);
+
+  @override
+  Map toMap() => PolyceModel.serializer.toMap(this);
 }

@@ -37,7 +37,6 @@ part "src/services/http_service.dart";
 
 
 initPolyce() async {
-    await initSerializer();
     await initServices();
     await initPolymer();
 }
