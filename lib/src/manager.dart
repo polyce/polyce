@@ -44,6 +44,7 @@ class Polyce {
 
 }
 
+@Deprecated("Only use initPolymer")
 initServices() async {
   Polyce.reset();
   service.annotatedClasses.forEach((classMirror) {
