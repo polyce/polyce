@@ -26,9 +26,9 @@ class Polyce {
   }
 
   static initAllServices() async {
-    for (var type in _services.keys) {
-      await _services[type].initialize();
-    }
+    await _services.forEach((type, PolyceService service) async {
+      await service.initialize();
+    });
   }
 
   static String encode(PolyceModel model) => model?.encode();
@@ -50,7 +50,7 @@ initServices() async {
   Polyce.reset();
   for (var classMirror in service.annotatedClasses) {
     if (!classMirror.isAbstract && classMirror.reflectedType != PolyceModel) {
-      classMirror.newInstance('', []);
+      var obj = classMirror.newInstance('', []);
     }
   }
   await Polyce.initAllServices();
