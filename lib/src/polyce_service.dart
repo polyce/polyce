@@ -26,8 +26,6 @@ abstract class PolyceService extends PolyceModel {
     Polyce.registerService(this.runtimeType, this);
   }
 
-  initialize() async {
-
-  }
+  Future initialize();
 
 }
