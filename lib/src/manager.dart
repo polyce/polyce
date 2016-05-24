@@ -44,18 +44,12 @@ class Polyce {
 
 }
 
-@Deprecated("Only use initPolymer")
 initServices() async {
   Polyce.reset();
   service.annotatedClasses.forEach((classMirror) {
     if (!classMirror.isAbstract &&
         classMirror.reflectedType != PolyceModel) {
-      var obj = classMirror.newInstance('', []);
-      var instance = service.reflect(obj);
-      var ref = instance.reflectee;
-      if (ref is PolyceService) {
-        Polyce.registerService(classMirror.reflectedType, ref);
-      }
+      classMirror.newInstance('', []);
     }
   });
   Polyce.initAllServices();
