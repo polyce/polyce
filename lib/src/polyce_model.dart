@@ -13,8 +13,8 @@ abstract class PolyceModel extends Observable with Serialize {
   String toString() => toMap().toString();
 
   @override
-  String encode() => PolyceModel.serializer.encode(this);
+  String encode() => PolyceModel.serializer?.encode(this);
 
   @override
-  Map toMap() => PolyceModel.serializer.toMap(this);
+  Map toMap() => PolyceModel.serializer?.toMap(this);
 }

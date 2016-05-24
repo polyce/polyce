@@ -35,16 +35,18 @@ class Polyce {
   static Map encodeToMap(PolyceModel model) => model?.toMap();
 
   static PolyceModel decode(String json, Type type, [Serializer _serializer]) =>
-      _serializer == null ? serializer.decode(json, type) : _serializer.decode(json, type);
+      _serializer == null ? serializer?.decode(json, type) : _serializer.decode(json, type);
   static PolyceModel decodeMap(Map map, Type type, [Serializer _serializer]) =>
-      _serializer == null ? serializer.fromMap(map, type) : _serializer.fromMap(map, type);
+      _serializer == null ? serializer?.fromMap(map, type) : _serializer.fromMap(map, type);
   static List<PolyceModel> decodeList(List list, Type type, [Serializer _serializer]) =>
-      (_serializer == null ? serializer.fromList(list, type) : serializer.fromList(list, type)) as List<PolyceModel>;
+      (_serializer == null ? serializer?.fromList(list, type) : serializer?.fromList(list, type)) as List<PolyceModel>;
 
   static final HttpService http_service = new HttpService();
 
-  static Serializer serializer = new Serializer.TypedJson();
+  static Serializer serializer;
+
 }
+
 
 initServices() async {
   Polyce.reset();

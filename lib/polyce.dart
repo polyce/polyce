@@ -19,11 +19,11 @@ import "package:serializer/serializer.dart";
 import "package:observe/observe.dart";
 import "package:polymer_autonotify/polymer_autonotify.dart";
 
+export "package:serializer/serializer.dart";
+export "package:observe/observe.dart";
 export 'package:polymer/polymer.dart';
 export "package:polymer_app_router/polymer_app_router.dart";
 export "package:route_hierarchical/client.dart";
-export "package:serializer/serializer.dart";
-export "package:observe/observe.dart";
 export "package:polymer_autonotify/polymer_autonotify.dart";
 export "dart:html";
 export "package:web_components/web_components.dart" show HtmlImport;
@@ -36,6 +36,7 @@ part "src/manager.dart";
 part "src/services/http_service.dart";
 
 initPolyce() async {
+    Polyce.serializer = new Serializer.TypedJson();
     await initServices();
     await initPolymer();
 }
