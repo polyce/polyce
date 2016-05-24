@@ -5,7 +5,7 @@
 part of polyce;
 
 @serializable
-abstract class PolyceModel extends Observable with Serialize {
+abstract class PolyceModel extends Serialize with Observable {
 
   static Serializer serializer = Polyce.serializer;
 
