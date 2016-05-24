@@ -25,10 +25,10 @@ class Polyce {
     _services[type] = service;
   }
 
-  static initAllServices() {
-    _services.forEach((type, PolyceService service) {
-      service.initialize();
-    });
+  static initAllServices() async {
+    for (var type in _services.keys) {
+      await _services[type].initialize();
+    }
   }
 
   static String encode(PolyceModel model) => model?.toJson;
@@ -39,21 +39,14 @@ class Polyce {
   static List<PolyceModel> decodeList(List list, Type type) => Serializer.fromList(list, type);
 
   static final HttpService http_service = new HttpService();
-
 }
 
 initServices() async {
   Polyce.reset();
-  service.annotatedClasses.forEach((classMirror) {
-    if (!classMirror.isAbstract &&
-        classMirror.reflectedType != PolyceModel) {
-      var obj = classMirror.newInstance('', []);
-      var instance = service.reflect(obj);
-      var ref = instance.reflectee;
-      if (ref is PolyceService) {
-        Polyce.registerService(classMirror.reflectedType, ref);
-      }
+  for (var classMirror in service.annotatedClasses) {
+    if (!classMirror.isAbstract && classMirror.reflectedType != PolyceModel) {
+      classMirror.newInstance('', []);
     }
-  });
-  Polyce.initAllServices();
+  }
+  await Polyce.initAllServices();
 }
