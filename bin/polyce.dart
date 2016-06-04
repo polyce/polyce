@@ -89,17 +89,21 @@ initOptions() {
 
 main(List<String> args) async {
   initOptions();
-  ArgParser parser = new ArgParser()
+  ArgParser parser = new ArgParser(allowTrailingOptions: true)
     ..addCommand(
         "app",
-        new ArgParser()
+        new ArgParser(allowTrailingOptions: true)
           ..addFlag("material",
               defaultsTo: true,
               help: "Generate a Material Design Application",
               negatable: true))
     ..addCommand(
         "element",
-        new ArgParser()
+        new ArgParser(allowTrailingOptions: true)
+          ..addFlag("autonotify",
+              abbr: "a",
+              defaultsTo: true,
+              negatable: true)
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
@@ -107,7 +111,7 @@ main(List<String> args) async {
                   : element.library_path_default))
     ..addCommand(
         "service",
-        new ArgParser()
+        new ArgParser(allowTrailingOptions: true)
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
@@ -115,7 +119,11 @@ main(List<String> args) async {
                   : service.library_path_default))
     ..addCommand(
         "behavior",
-        new ArgParser()
+        new ArgParser(allowTrailingOptions: true)
+          ..addFlag("autonotify",
+              abbr: "a",
+              defaultsTo: true,
+              negatable: true)
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
@@ -123,7 +131,7 @@ main(List<String> args) async {
                   : behavior.library_path_default))
     ..addCommand(
         "model",
-        new ArgParser()
+        new ArgParser(allowTrailingOptions: true)
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
@@ -131,7 +139,11 @@ main(List<String> args) async {
                   : model.library_path_default))
     ..addCommand(
         "route",
-        new ArgParser()
+        new ArgParser(allowTrailingOptions: true)
+          ..addFlag("autonotify",
+              abbr: "a",
+              defaultsTo: true,
+              negatable: true)
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
@@ -155,7 +167,7 @@ main(List<String> args) async {
         print(usage);
       } else {
         element.library_path = results.command["path"];
-        return element.create(results.command.rest[0]);
+        return element.create(results.command.rest[0], autonotify: results.command["autonotify"]);
       }
       break;
     case "service":
@@ -171,7 +183,7 @@ main(List<String> args) async {
         print(usage);
       } else {
         behavior.library_path = results.command["path"];
-        return behavior.create(results.command.rest[0]);
+        return behavior.create(results.command.rest[0], autonotify: results.command["autonotify"]);
       }
       break;
     case "model":
@@ -187,7 +199,7 @@ main(List<String> args) async {
         print(usage);
       } else {
         route.library_path = results.command["path"];
-        return route.create(results.command.rest[0], results.command.rest[1]);
+        return route.create(results.command.rest[0], results.command.rest[1], autonotify: results.command["autonotify"]);
       }
       break;
     default:
@@ -199,11 +211,11 @@ Map options;
 
 String get usage => '''
 polyce  app      --[no]-material [name]
-        element  --path=(default: "." or define in app.options.json) [name]
-        route    --path=(default: "." or define in app.options.json) [name] [path]
+        element  --path=(default: "." or define in app.options.json) --no-autonotify [name]
+        route    --path=(default: "." or define in app.options.json) --no-autonotify [name] [path]
         model    --path=(default: "." or define in app.options.json) [name]
         service  --path=(default: "." or define in app.options.json) [name]
-        behavior --path=(default: "." or define in app.options.json) [name]
+        behavior --path=(default: "." or define in app.options.json) --no-autonotify [name]
 
 If 'app.options.json' is present in your current folder,
 the generated component will be automatically add to his library specified in the options file.

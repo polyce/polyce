@@ -16,11 +16,12 @@ create(String name, String path,
     bool isDefault: false,
     bool isAbstract,
     String redirectTo,
-    String parent}) async {
+    String parent,
+    bool autonotify: true}) async {
   name = toSnakeCase(name);
   if (dartTemplate == null) {
     dartTemplate = routeDartTemplate(name, "${name}Route", path, isDefault,
-        isAbstract: isAbstract, parent: parent, redirectTo: redirectTo);
+        isAbstract: isAbstract, parent: parent, redirectTo: redirectTo, autonotify: autonotify);
   }
   htmlTemplate = element.elementHtmlTemplate("${name}-route", htmlTemplate, cssTemplate);
 
@@ -45,7 +46,7 @@ _notEmptyButNull(String value) {
 }
 
 routeDartTemplate(String name, String routeName, String path, bool isDefault,
-        {bool isAbstract: false, String redirectTo: "", String parent: ""}) =>
+        {bool isAbstract: false, String redirectTo: "", String parent: "", bool autonotify: true}) =>
     '''
       @HtmlImport("${toSnakeCase(name)}.html")
       library route_elements.${toSnakeCase(name)};
@@ -53,8 +54,9 @@ routeDartTemplate(String name, String routeName, String path, bool isDefault,
       @PolyceRoute("${toCamelCase(routeName)}", "$path", isDefault: $isDefault,
       isAbstract: $isAbstract, parent: ${_notEmptyButNull(toCamelCase(parent))}, redirectTo: ${_notEmptyButNull(toCamelCase(redirectTo))})
       @PolymerRegister("${toLispCase(name)}")
-      class ${toCamelCase(name)} extends PolymerElement with AutonotifyBehavior, Observable, PolymerAppRouteBehavior {
+      class ${toCamelCase(name)} extends PolymerElement ${ autonotify ? "with AutonotifyBehavior, Observable, PolymerAppRouteBehavior" : "" } {
       ${toCamelCase(name)}.created() : super.created();
+      ${element.propertyTemplate("field", String, autonotify)}
       /// Called when an instance of ${toLispCase(name)} is inserted into the DOM.
       attached() {
       super.attached();

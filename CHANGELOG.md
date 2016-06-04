@@ -5,6 +5,7 @@
 - Fix init service
 - No css file on element generation
 - default html content in element
+- autonotify behavior can be desactivate
 
 # <= 0.1.3
 

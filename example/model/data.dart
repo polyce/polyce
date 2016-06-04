@@ -8,8 +8,10 @@ import "package:polyce/polyce.dart";
 
 @serializable
 class Data extends PolyceModel {
-    @observable String foo;
-@observable List<String> list = new ObservableList.from([ "list", "in", "model"]);
+  @observable
+  String foo;
+  @observable
+  List<String> list = new ObservableList.from(["list", "in", "model"]);
 
-    Data([this.foo = "bar"]);
+  Data([this.foo = "bar"]);
 }

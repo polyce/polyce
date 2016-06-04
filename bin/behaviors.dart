@@ -4,14 +4,15 @@
 
 import "polyce.dart";
 import "utils.dart";
+import "elements.dart" as element;
 
 final String library_path_default = ".";
 String library_path = library_path_default;
 
-create(String name, [String content]) async {
+create(String name, {String content, bool autonotify: true}) async {
   name = toSnakeCase(name);
   if (content == null) {
-    content = behaviorDartTemplate(name);
+    content = behaviorDartTemplate(name, autonotify: autonotify);
   }
   await writeInDartFile(
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
@@ -21,11 +22,14 @@ create(String name, [String content]) async {
   }
 }
 
-behaviorDartTemplate(String name) => '''
+behaviorDartTemplate(String name, {bool autonotify: true}) => '''
     library elements.${toSnakeCase(name)};
-    import "package:polyce_app/polyce_app.dart";
+    import "package:polyce/polyce.dart";
     @behavior
-    abstract class ${toCamelCase(name)} implements AutonotifyBehavior, Observable {
+    abstract class ${toCamelCase(name)} ${ autonotify ? "implements AutonotifyBehavior, Observable" : "" } {
+
+    ${element.propertyTemplate("field", String, autonotify)}
+
     /// Called when an instance of ${toCamelCase(name)} is inserted into the DOM.
     static attached(${toCamelCase(name)} instance) {
     }
