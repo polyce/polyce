@@ -8,11 +8,19 @@ import "utils.dart";
 final String library_path_default = ".";
 String library_path = library_path_default;
 
+const String cssdefault = ''':host {
+    font-family: 'Roboto', 'Noto', sans-serif;
+    font-weight: 300;
+    display: block;
+    }''';
+
+const String htmldefault =  "<span>{{field}}</span>";
+
 create(String name,
-    [String dartContent,
+{String dartContent,
     String htmlContent,
-    String cssContent = cssdefault,
-    String innerHtmlContent = ""]) async {
+    String cssContent: cssdefault,
+    String innerHtmlContent: htmldefault}) async {
 
   name = toSnakeCase(name);
   if (name == null || !name.contains("_")) {
@@ -64,7 +72,7 @@ elementDartTemplate(String name) => '''
     }
     ''';
 
-elementHtmlTemplate(String name, [String innerContent = "", String cssContent = cssdefault]) => '''
+elementHtmlTemplate(String name, [String innerContent = htmldefault, String cssContent = cssdefault]) => '''
     <dom-module id="${toLispCase(name)}">
     <template>
     <style>
@@ -76,10 +84,3 @@ elementHtmlTemplate(String name, [String innerContent = "", String cssContent = 
     </dom-module>
     ''';
 
-const String cssdefault =  '''
-  :host {
-    font-family: 'Roboto', 'Noto', sans-serif;
-    font-weight: 300;
-    display: block;
-    }
-    ''';

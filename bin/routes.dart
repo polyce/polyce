@@ -11,7 +11,7 @@ String library_path = library_path_default;
 
 create(String name, String path,
     {String dartTemplate,
-    String htmlTemplate,
+    String htmlTemplate: element.htmldefault,
     String cssTemplate: element.cssdefault,
     bool isDefault: false,
     bool isAbstract,
