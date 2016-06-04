@@ -11,7 +11,7 @@ String library_path = library_path_default;
 create(String name,
     [String dartContent,
     String htmlContent,
-    String cssContent,
+    String cssContent = cssdefault,
     String innerHtmlContent = ""]) async {
 
   name = toSnakeCase(name);
@@ -23,10 +23,7 @@ create(String name,
     dartContent = elementDartTemplate(name);
   }
   if (htmlContent == null) {
-    htmlContent = elementHtmlTemplate(name, innerHtmlContent);
-  }
-  if (cssContent == null) {
-    cssContent = elementCssTemplate(name);
+    htmlContent = elementHtmlTemplate(name, innerHtmlContent, cssContent);
   }
   await writeInDartFile(
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
@@ -34,9 +31,6 @@ create(String name,
   await writeInFile(
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
       htmlContent);
-  await writeInFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
-      cssContent);
 
   if (library_path == (options != null ? options["elements"] : null)) {
     addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "$library_path/elements.dart");
@@ -70,17 +64,19 @@ elementDartTemplate(String name) => '''
     }
     ''';
 
-elementHtmlTemplate(String name, [String innerContent = ""]) => '''
+elementHtmlTemplate(String name, [String innerContent = "", String cssContent = cssdefault]) => '''
     <dom-module id="${toLispCase(name)}">
-    <link rel="import" type="css" href="${toSnakeCase(name)}.css">
     <template>
+    <style>
+      $cssContent
+    </style>
     <!-- local DOM for your element -->
     $innerContent
     </template>
     </dom-module>
     ''';
 
-elementCssTemplate(String name) => '''
+const String cssdefault =  '''
   :host {
     font-family: 'Roboto', 'Noto', sans-serif;
     font-weight: 300;

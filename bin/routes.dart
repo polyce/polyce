@@ -12,7 +12,7 @@ String library_path = library_path_default;
 create(String name, String path,
     {String dartTemplate,
     String htmlTemplate,
-    String cssTemplate,
+    String cssTemplate: element.cssdefault,
     bool isDefault: false,
     bool isAbstract,
     String redirectTo,
@@ -22,10 +22,7 @@ create(String name, String path,
     dartTemplate = routeDartTemplate(name, "${name}Route", path, isDefault,
         isAbstract: isAbstract, parent: parent, redirectTo: redirectTo);
   }
-  htmlTemplate = element.elementHtmlTemplate("${name}-route", htmlTemplate ?? "");
-  if (cssTemplate == null) {
-    cssTemplate = element.elementCssTemplate(name);
-  }
+  htmlTemplate = element.elementHtmlTemplate("${name}-route", htmlTemplate, cssTemplate);
 
   await writeInDartFile(
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
@@ -33,9 +30,6 @@ create(String name, String path,
   await writeInFile(
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
       htmlTemplate);
-  await writeInFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
-      cssTemplate);
 
   if (library_path == (options != null ? options["routes_elements"] : null)) {
     addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
