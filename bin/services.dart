@@ -24,6 +24,7 @@ serviceDartTemplate(String name) => '''
     library services.${toSnakeCase(name)};
         import 'package:polyce/polyce.dart';
         @serializable
+        @service
         class ${toCamelCase(name)} extends PolyceService {
         HttpService get http => Polyce.http_service;
         @observable String foo = "bar";
