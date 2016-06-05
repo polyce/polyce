@@ -30,18 +30,19 @@ serviceDartTemplate(String name) => '''
 
         static ${toCamelCase(name)} _instance;
 
-        ${toCamelCase(name)}._constructor() : super._constructor();
+        ${toCamelCase(name)}._constructor() : super.constructor() {
+        }
 
         factory ${toCamelCase(name)}() {
           if (_instance == null) {
-            _instance = new ${toCamelCase(name)}._init();
+            _instance = new ${toCamelCase(name)}._constructor();
           }
           return _instance;
         }
 
-        initialize() {
-
-        }
+        @override
+initialize() {
+}
 
         }
 

@@ -1,5 +1,9 @@
 #changelog
 
+# 0.1.5
+
+- Fix service generation
+
 # 0.1.4
 
 - Fix init service
