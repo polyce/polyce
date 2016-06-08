@@ -23,23 +23,17 @@ create(String name, String path,
         isAbstract: isAbstract, parent: parent, redirectTo: redirectTo);
   }
   htmlTemplate = element.elementHtmlTemplate("${name}-route", htmlTemplate ?? "");
-  if (cssTemplate == null) {
-    cssTemplate = element.elementCssTemplate(name);
-  }
 
   await writeInDartFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
+      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
       dartTemplate);
   await writeInFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
+      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
       htmlTemplate);
-  await writeInFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
-      cssTemplate);
 
-  if (library_path == (options != null ? options.settings["routes"]?.library : null)) {
-    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
-        options.settings["routes"].library);
+  if (library_path == (options != null ? options.settings["routes"]?.path : null)) {
+    addToLibrary("${options.settings["routes"]?.path}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
+        "lib/${options.settings["routes"]?.library}");
   }
 }
 

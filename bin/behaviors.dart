@@ -14,10 +14,10 @@ create(String name, [String content]) async {
     content = behaviorDartTemplate(name);
   }
   await writeInDartFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
+      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
 
-  if (library_path == (options != null ? options.settings["behaviors"].library : null)) {
-    addToLibrary("${toSnakeCase(name)}.dart", options.settings["behaviors"].library);
+  if (library_path == (options != null ? options.settings["behaviors"].path : null)) {
+    addToLibrary("${options.settings["behaviors"]?.path}/${toSnakeCase(name)}.dart", "lib/${options.settings["behaviors"]?.library}");
   }
 }
 

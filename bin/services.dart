@@ -14,9 +14,9 @@ create(String name, [String content]) async {
     content = serviceDartTemplate(name);
   }
   await writeInDartFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
-  if (library_path == (options != null ? options.settings["services"]?.library : null)) {
-    addToLibrary("${toSnakeCase(name)}.dart", options.settings["services"]?.library);
+      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
+  if (library_path == (options != null ? options.settings["services"]?.path : null)) {
+    addToLibrary("${options.settings["services"]?.path}/${toSnakeCase(name)}.dart", "lib/${options.settings["services"]?.library}");
   }
 }
 

@@ -25,21 +25,15 @@ create(String name,
   if (htmlContent == null) {
     htmlContent = elementHtmlTemplate(name, innerHtmlContent);
   }
-  if (cssContent == null) {
-    cssContent = elementCssTemplate(name);
-  }
   await writeInDartFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
+      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
       dartContent);
   await writeInFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
+      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
       htmlContent);
-  await writeInFile(
-      "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
-      cssContent);
 
-  if (library_path == (options != null ? options.settings["elements"]?.library : null)) {
-    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", options.settings["elements"]?.library);
+  if (library_path == (options != null ? options.settings["elements"]?.path : null)) {
+    addToLibrary("${options.settings["elements"]?.path}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "lib/${options.settings["elements"]?.library}");
   }
 }
 
@@ -73,18 +67,16 @@ elementDartTemplate(String name) => '''
 
 elementHtmlTemplate(String name, [String innerContent = ""]) => '''
     <dom-module id="${toLispCase(name)}">
-    <link rel="import" type="css" href="${toSnakeCase(name)}.css">
     <template>
-    <!-- local DOM for your element -->
-    $innerContent
-    </template>
-    </dom-module>
-    ''';
-
-elementCssTemplate(String name) => '''
-  :host {
+    <style>
+    :host {
     font-family: 'Roboto', 'Noto', sans-serif;
     font-weight: 300;
     display: block;
     }
+    </style>
+    <!-- local DOM for your element -->
+    $innerContent
+    </template>
+    </dom-module>
     ''';
