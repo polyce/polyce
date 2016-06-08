@@ -2,7 +2,7 @@
  * Created by lejard_h on 24/12/15.
  */
 
-import "utils.dart";
+import "package:polyce/src/utils.dart";
 import "polyce.dart";
 import "elements.dart" as element;
 
@@ -37,9 +37,9 @@ create(String name, String path,
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
       cssTemplate);
 
-  if (library_path == (options != null ? options["routes_elements"] : null)) {
+  if (library_path == (options != null ? options.settings["routes"]?.library : null)) {
     addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
-        "$library_path/routes_elements.dart");
+        options.settings["routes"].library);
   }
 }
 
@@ -55,6 +55,7 @@ routeDartTemplate(String name, String routeName, String path, bool isDefault,
     '''
       @HtmlImport("${toSnakeCase(name)}.html")
       library route_elements.${toSnakeCase(name)};
+      import "dart:html";
       import "package:polyce/polyce.dart";
       @PolyceRoute("${toCamelCase(routeName)}", "$path", isDefault: $isDefault,
       isAbstract: $isAbstract, parent: ${_notEmptyButNull(toCamelCase(parent))}, redirectTo: ${_notEmptyButNull(toCamelCase(redirectTo))})

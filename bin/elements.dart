@@ -3,7 +3,7 @@
  */
 
 import "polyce.dart";
-import "utils.dart";
+import "package:polyce/src/utils.dart";
 
 final String library_path_default = ".";
 String library_path = library_path_default;
@@ -38,14 +38,15 @@ create(String name,
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.css",
       cssContent);
 
-  if (library_path == (options != null ? options["elements"] : null)) {
-    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "$library_path/elements.dart");
+  if (library_path == (options != null ? options.settings["elements"]?.library : null)) {
+    addToLibrary("${toSnakeCase(name)}/${toSnakeCase(name)}.dart", options.settings["elements"]?.library);
   }
 }
 
 elementDartTemplate(String name) => '''
     @HtmlImport('${toSnakeCase(name)}.html')
     library elements.${toSnakeCase(name)};
+    import "dart:html";
     import 'package:polyce/polyce.dart';
     @PolymerRegister('${toLispCase(name)}')
     class ${toCamelCase(name)} extends PolymerElement with AutonotifyBehavior, Observable {

@@ -3,7 +3,7 @@
  */
 
 import "polyce.dart";
-import "utils.dart";
+import "package:polyce/src/utils.dart";
 
 final String library_path_default = ".";
 String library_path = library_path_default;
@@ -15,17 +15,17 @@ create(String name, [String content]) async {
   }
   await writeInDartFile(
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
-  if (library_path == (options != null ? options["services"] : null)) {
-    addToLibrary("${toSnakeCase(name)}.dart", "$library_path/services.dart");
+  if (library_path == (options != null ? options.settings["services"]?.library : null)) {
+    addToLibrary("${toSnakeCase(name)}.dart", options.settings["services"]?.library);
   }
 }
 
 serviceDartTemplate(String name) => '''
     library services.${toSnakeCase(name)};
         import 'package:polyce/polyce.dart';
-        @serializable
+
         class ${toCamelCase(name)} extends PolyceService {
-        HttpService get http => Polyce.http_service;
+        HttpService get http => http_service;
         @observable String foo = "bar";
 
         static ${toCamelCase(name)} _instance;
@@ -39,6 +39,7 @@ serviceDartTemplate(String name) => '''
           return _instance;
         }
 
+        @override
         initialize() {
 
         }

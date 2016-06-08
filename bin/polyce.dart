@@ -5,9 +5,11 @@
 import 'dart:io';
 import 'dart:async';
 import "dart:convert";
-import "package:args/args.dart";
-import "utils.dart";
 
+import "package:args/args.dart";
+import "package:polyce/src/config_file.dart";
+
+import "package:polyce/src/utils.dart";
 import "elements.dart" as element;
 import "services.dart" as service;
 import "behaviors.dart" as behavior;
@@ -88,7 +90,6 @@ initOptions() {
 }
 
 main(List<String> args) async {
-  initOptions();
   ArgParser parser = new ArgParser()
     ..addCommand(
         "app",
@@ -103,7 +104,7 @@ main(List<String> args) async {
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
-                  ? options["elements"]
+                  ? options.settings["elements"].path
                   : element.library_path_default))
     ..addCommand(
         "service",
@@ -111,7 +112,7 @@ main(List<String> args) async {
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
-                  ? options["services"]
+                  ? options.settings["services"].path
                   : service.library_path_default))
     ..addCommand(
         "behavior",
@@ -119,7 +120,7 @@ main(List<String> args) async {
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
-                  ? options["behaviors"]
+                  ? options.settings["behaviors"].path
                   : behavior.library_path_default))
     ..addCommand(
         "model",
@@ -127,7 +128,7 @@ main(List<String> args) async {
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
-                  ? options["models"]
+                  ? options.settings["models"].path
                   : model.library_path_default))
     ..addCommand(
         "route",
@@ -135,7 +136,7 @@ main(List<String> args) async {
           ..addOption("path",
               abbr: "p",
               defaultsTo: options != null
-                  ? options["routes_elements"]
+                  ? options.settings["routes"].path
                   : route.library_path_default));
 
   ArgResults results = parser.parse(args);
@@ -194,8 +195,6 @@ main(List<String> args) async {
       print(usage);
   }
 }
-
-Map options;
 
 String get usage => '''
 polyce  app      --[no]-material [name]

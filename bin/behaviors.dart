@@ -3,7 +3,7 @@
  */
 
 import "polyce.dart";
-import "utils.dart";
+import "package:polyce/src/utils.dart";
 
 final String library_path_default = ".";
 String library_path = library_path_default;
@@ -16,14 +16,15 @@ create(String name, [String content]) async {
   await writeInDartFile(
       "${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
 
-  if (library_path == (options != null ? options["behaviors"] : null)) {
-    addToLibrary("${toSnakeCase(name)}.dart", "$library_path/behaviors.dart");
+  if (library_path == (options != null ? options.settings["behaviors"].library : null)) {
+    addToLibrary("${toSnakeCase(name)}.dart", options.settings["behaviors"].library);
   }
 }
 
 behaviorDartTemplate(String name) => '''
     library elements.${toSnakeCase(name)};
-    import "package:polyce_app/polyce_app.dart";
+    import "package:polyce/polyce.dart";
+    import "package:/polyce.dart";
     @behavior
     abstract class ${toCamelCase(name)} implements AutonotifyBehavior, Observable {
     /// Called when an instance of ${toCamelCase(name)} is inserted into the DOM.
