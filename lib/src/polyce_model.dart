@@ -4,17 +4,10 @@
 
 part of polyce;
 
-@serializable
-abstract class PolyceModel extends Serialize with Observable {
+abstract class PolyceModel extends Observable {
 
-  static Serializer serializer = Polyce.serializer;
-
-  @override
-  String toString() => toMap().toString();
+  Map<dynamic, dynamic> encode();
 
   @override
-  String encode() => PolyceModel.serializer?.encode(this);
-
-  @override
-  Map toMap() => PolyceModel.serializer?.toMap(this);
+  String toString() => encode()?.toString();
 }

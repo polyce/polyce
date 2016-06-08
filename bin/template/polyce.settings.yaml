@@ -1,0 +1,18 @@
+name: __projectName__
+
+settings:
+  elements:
+    library: "elements.dart"
+    path: "src/elements"
+  routes:
+    library: "routes_elements.dart"
+    path: "src/routes_elements"
+  models:
+    library: "models.dart"
+    path: "src/models"
+  services:
+    library: "models.dart"
+    path: "src/models"
+  behaviors:
+    library: "behaviors.dart"
+    path: "src/behaviors"
