@@ -14,11 +14,10 @@ import "package:polymer_app_router/polymer_app_router.dart";
 import "package:observe/observe.dart";
 import "package:polymer_autonotify/polymer_autonotify.dart";
 
-
-export "package:observe/observe.dart";
 export 'package:polymer/polymer.dart';
 export "package:polymer_app_router/polymer_app_router.dart";
 export "package:route_hierarchical/client.dart";
+export "package:observe/observe.dart";
 export "package:polymer_autonotify/polymer_autonotify.dart";
 export "package:web_components/web_components.dart" show HtmlImport;
 

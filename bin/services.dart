@@ -24,25 +24,26 @@ serviceDartTemplate(String name) => '''
     library services.${toSnakeCase(name)};
         import 'package:polyce/polyce.dart';
 
+        @Service()
         class ${toCamelCase(name)} extends PolyceService {
         HttpService get http => http_service;
         @observable String foo = "bar";
 
         static ${toCamelCase(name)} _instance;
 
-        ${toCamelCase(name)}._constructor() : super._constructor();
+        ${toCamelCase(name)}._constructor() : super.constructor() {
+        }
 
         factory ${toCamelCase(name)}() {
           if (_instance == null) {
-            _instance = new ${toCamelCase(name)}._init();
+            _instance = new ${toCamelCase(name)}._constructor();
           }
           return _instance;
         }
 
         @override
-        initialize() {
-
-        }
+initialize() {
+}
 
         }
 

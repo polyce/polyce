@@ -11,19 +11,20 @@ environment:
   sdk: '>=1.13.0 <2.0.0'
 
 dependencies:
-  polymer: "^1.0.0-rc.14"
+  polymer: "^1.0.0-rc.15"
   polymer_app_router: "^0.2.0"
   dart_to_js_script_rewriter: "^0.1.0+4"
   autonotify_observe: "^1.0.0+7"
   http: "^0.11.3+3"
   dogma_codegen: '^0.0.2'
+  dart_style: "^0.2.2"
+  yaml: "^2.1.9"
 
 transformers:
   - autonotify_observe
   - polymer:
       entry_points: example/index.html
   - $dart2js:
-      $include: '**/*.bootstrap.initialize.dart'
       minify: true
       commandLineOptions: ['--trust-type-annotations', '--trust-primitives', '--enable-experimental-mirrors']
   - dart_to_js_script_rewriter
@@ -32,5 +33,3 @@ dev_dependencies:
   args: "^0.13.4"
   path: "^1.3.9"
   test: '>=0.12.0'
-  dart_style: "^0.2.2"
-  yaml: "^2.1.9"

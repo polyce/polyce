@@ -2,28 +2,38 @@
  * Created by lejard_h on 24/12/15.
  */
 
+import "dart:io";
 import "polyce.dart";
 import "package:polyce/src/utils.dart";
 
 final String library_path_default = ".";
 String library_path = library_path_default;
 
+const String cssdefault = ''':host {
+    font-family: 'Roboto', 'Noto', sans-serif;
+    font-weight: 300;
+    display: block;
+    }''';
+
+const String htmldefault =  "<span>{{field}}</span>";
+
 create(String name,
-    [String dartContent,
+{String dartContent,
     String htmlContent,
-    String cssContent,
-    String innerHtmlContent = ""]) async {
+    String cssContent: cssdefault,
+    String innerHtmlContent: htmldefault,
+bool autonotify: true}) async {
 
   name = toSnakeCase(name);
   if (name == null || !name.contains("_")) {
-    throw "The element name is invalid";
+    name = "${name}_element";
   }
 
   if (dartContent == null) {
-    dartContent = elementDartTemplate(name);
+    dartContent = elementDartTemplate(name, autonotify: autonotify);
   }
   if (htmlContent == null) {
-    htmlContent = elementHtmlTemplate(name, innerHtmlContent);
+    htmlContent = elementHtmlTemplate(name, innerHtmlContent, cssContent);
   }
   await writeInDartFile(
       "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
@@ -37,15 +47,32 @@ create(String name,
   }
 }
 
-elementDartTemplate(String name) => '''
+propertyTemplate(String name, Type type, bool autonotify) {
+  name = toCamelCase(name);
+  name = name.replaceRange(0, 1, name[0].toLowerCase());
+
+  if (autonotify) {
+    return "@observable @property String $name;";
+  }
+  return '''
+    @property $type _$name;
+    @reflectable $type get $name => _$name;
+    void set $name($type val) {
+      _$name = val;
+      notifyPath("$name", val);
+    }
+  ''';
+}
+
+elementDartTemplate(String name, {bool autonotify: true}) => '''
     @HtmlImport('${toSnakeCase(name)}.html')
     library elements.${toSnakeCase(name)};
     import "dart:html";
     import 'package:polyce/polyce.dart';
     @PolymerRegister('${toLispCase(name)}')
-    class ${toCamelCase(name)} extends PolymerElement with AutonotifyBehavior, Observable {
+    class ${toCamelCase(name)} extends PolymerElement ${ autonotify ? "with AutonotifyBehavior, Observable" : ""} {
     ${toCamelCase(name)}.created() : super.created();
-    @observable @property String field;
+    ${propertyTemplate("field", String, autonotify)}
     /// Called when an instance of ${toLispCase(name)} is inserted into the DOM.
     attached() {
     super.attached();
@@ -65,18 +92,15 @@ elementDartTemplate(String name) => '''
     }
     ''';
 
-elementHtmlTemplate(String name, [String innerContent = ""]) => '''
+elementHtmlTemplate(String name, [String innerContent = htmldefault, String cssContent = cssdefault]) => '''
     <dom-module id="${toLispCase(name)}">
     <template>
     <style>
-    :host {
-    font-family: 'Roboto', 'Noto', sans-serif;
-    font-weight: 300;
-    display: block;
-    }
+      $cssContent
     </style>
     <!-- local DOM for your element -->
     $innerContent
     </template>
     </dom-module>
     ''';
+
