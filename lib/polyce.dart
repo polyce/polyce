@@ -22,6 +22,7 @@ export "package:polymer_autonotify/polymer_autonotify.dart";
 export "package:web_components/web_components.dart" show HtmlImport;
 
 export "src/services/http_service.dart";
+export "src/services/polyce_http.dart";
 
 part "src/polyce_model.dart";
 part "src/polyce_route.dart";
