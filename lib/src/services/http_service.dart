@@ -156,7 +156,7 @@ class HttpService extends PolyceService {
     return url;
   }
 
-  insertParamsToUri(String uri, Map<String, dynamic> params) {
+  _insertParamsToUri(String uri, Map<String, dynamic> params) {
     params?.forEach((String key, value) {
       if (value != null && uri.contains(":$key")) {
         uri = uri.replaceFirst(":$key", Uri.encodeComponent(value));
@@ -167,3 +167,5 @@ class HttpService extends PolyceService {
 
   initialize() {}
 }
+
+HttpService http_service = new HttpService();

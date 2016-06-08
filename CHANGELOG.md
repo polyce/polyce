@@ -3,6 +3,7 @@
 ## 0.2.0
 
 - Integration of `grind` in app template
+- `PolyceHttp<PolyceModel>` for easy http request with automatic serialization
 
 **Breaking changes:**
     - No reflectable on model, use of `dogma-codegen`
