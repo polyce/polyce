@@ -12,9 +12,9 @@ import "package:dogma_convert/convert.dart";
 
 String get json_format => "json";
 
-class HttpResponse<T> {
+class HttpResponse {
   Response response;
-  T convertedBody;
+  dynamic convertedBody;
 
   num get statusCode => response?.statusCode;
 }
@@ -24,13 +24,13 @@ class HttpService extends PolyceService {
 
   static HttpService _instance;
 
-  HttpService._constructor() : super.constructor() {
+  HttpService.constructor() : super.constructor() {
 
   }
 
   factory HttpService() {
     if (_instance == null) {
-      _instance = new HttpService._constructor();
+      _instance = new HttpService.constructor();
     }
     return _instance;
   }
@@ -39,7 +39,7 @@ class HttpService extends PolyceService {
 
   BrowserClient _http = new BrowserClient();
 
-  dynamic _encodeBody(dynamic body, ModelEncoder encoder) {
+  dynamic encode(dynamic body, ModelEncoder encoder) {
     dynamic _body = body;
     if (body is PolyceModel) {
       _body = body.encode();
@@ -60,7 +60,7 @@ class HttpService extends PolyceService {
     HttpResponse res = new HttpResponse();
     res.response =
     await _http.delete(_constructUrlParams(url, params), headers: headers);
-    return _handleResponseBody(res, decoder);
+    return decode(res, decoder);
   }
 
   Future<HttpResponse> get(String url,
@@ -70,7 +70,7 @@ class HttpService extends PolyceService {
     HttpResponse res = new HttpResponse();
     res.response =
     await _http.get(_constructUrlParams(url, params), headers: headers);
-    return _handleResponseBody(res, decoder);
+    return decode(res, decoder);
   }
 
   Future<HttpResponse> head(String url,
@@ -80,7 +80,7 @@ class HttpService extends PolyceService {
     HttpResponse res = new HttpResponse();
     res.response =
     await _http.head(_constructUrlParams(url, params), headers: headers);
-    return _handleResponseBody(res, decoder);
+    return decode(res, decoder);
   }
 
   Future<HttpResponse> patch(String url,
@@ -93,8 +93,8 @@ class HttpService extends PolyceService {
     HttpResponse res = new HttpResponse();
 
     res.response = await _http.patch(_constructUrlParams(url, params),
-        body: _encodeBody(body, encoder), headers: headers, encoding: encoding);
-    return _handleResponseBody(res, decoder);
+        body: encode(body, encoder), headers: headers, encoding: encoding);
+    return decode(res, decoder);
   }
 
   Future<HttpResponse> post(String url,
@@ -106,8 +106,8 @@ class HttpService extends PolyceService {
       ModelEncoder encoder}) async {
     HttpResponse res = new HttpResponse();
     res.response = await _http.post(_constructUrlParams(url, params),
-        body: _encodeBody(body, encoder), headers: headers, encoding: encoding);
-    return _handleResponseBody(res, decoder);
+        body: encode(body, encoder), headers: headers, encoding: encoding);
+    return decode(res, decoder);
   }
 
   Future<HttpResponse> put(String url,
@@ -119,17 +119,28 @@ class HttpService extends PolyceService {
       ModelEncoder encoder}) async {
     HttpResponse res = new HttpResponse();
     res.response = await _http.put(_constructUrlParams(url, params),
-        body: _encodeBody(body, encoder), headers: headers, encoding: encoding);
-    return _handleResponseBody(res, decoder);
+        body: encode(body, encoder), headers: headers, encoding: encoding);
+    return decode(res, decoder);
   }
 
-  HttpResponse _handleResponseBody(HttpResponse res, ModelDecoder decoder) {
+  dynamic _decode(dynamic data, ModelDecoder decoder) {
+    if (data is Map) {
+      data = decoder.convert(data);
+    } else if (data is List) {
+      data = (data as List).map((dynamic _data) {
+        return _decode(_data, decoder);
+      });
+    }
+    return data;
+  }
+
+  HttpResponse decode(HttpResponse res, ModelDecoder decoder) {
     if (decoder != null && res.response?.body != null) {
       if (data_format == json_format) {
         res.convertedBody = JSON.decode(res.response?.body);
       }
-      if (decoder != null && res.convertedBody is Map) {
-        res.convertedBody = decoder.convert(res.convertedBody);
+      if (decoder != null) {
+        res.convertedBody = _decode(res.convertedBody, decoder);
       }
     }
     return res;

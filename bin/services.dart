@@ -10,13 +10,17 @@ String library_path = library_path_default;
 
 create(String name, [String content]) async {
   name = toSnakeCase(name);
+  String lib = "";
+  if (library_path == (options != null ? options.settings["services"].path : null)) {
+    lib = "lib/";
+  }
   if (content == null) {
     content = serviceDartTemplate(name);
   }
   await writeInDartFile(
-      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
-  if (library_path == (options != null ? options.settings["services"]?.path : null)) {
-    addToLibrary("${options.settings["services"]?.path}/${toSnakeCase(name)}.dart", "lib/${options.settings["services"]?.library}");
+      "$lib${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
+  if (lib == "lib/") {
+    addToLibrary("${options.settings["services"]?.path}/${toSnakeCase(name)}.dart", "$lib${options.settings["services"]?.library}");
   }
 }
 
@@ -31,12 +35,11 @@ serviceDartTemplate(String name) => '''
 
         static ${toCamelCase(name)} _instance;
 
-        ${toCamelCase(name)}._constructor() : super.constructor() {
-        }
+        ${toCamelCase(name)}.constructor() : super.constructor();
 
         factory ${toCamelCase(name)}() {
           if (_instance == null) {
-            _instance = new ${toCamelCase(name)}._constructor();
+            _instance = new ${toCamelCase(name)}.constructor();
           }
           return _instance;
         }

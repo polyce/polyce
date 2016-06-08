@@ -25,6 +25,11 @@ create(String name,
 bool autonotify: true}) async {
 
   name = toSnakeCase(name);
+
+  String lib = "";
+  if (library_path == (options != null ? options.settings["elements"].path : null)) {
+    lib = "lib/";
+  }
   if (name == null || !name.contains("_")) {
     name = "${name}_element";
   }
@@ -36,14 +41,14 @@ bool autonotify: true}) async {
     htmlContent = elementHtmlTemplate(name, innerHtmlContent, cssContent);
   }
   await writeInDartFile(
-      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
+      "$lib${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart",
       dartContent);
   await writeInFile(
-      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
+      "$lib${toSnakeCase(library_path)}/${toSnakeCase(name)}/${toSnakeCase(name)}.html",
       htmlContent);
 
-  if (library_path == (options != null ? options.settings["elements"]?.path : null)) {
-    addToLibrary("${options.settings["elements"]?.path}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "lib/${options.settings["elements"]?.library}");
+  if (lib == "lib/") {
+    addToLibrary("${options.settings["elements"]?.path}/${toSnakeCase(name)}/${toSnakeCase(name)}.dart", "$lib${options.settings["elements"]?.library}");
   }
 }
 

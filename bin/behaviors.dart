@@ -10,14 +10,18 @@ String library_path = library_path_default;
 
 create(String name, {String content, bool autonotify: true}) async {
   name = toSnakeCase(name);
+  String lib = "";
+  if (library_path == (options != null ? options.settings["behaviors"].path : null)) {
+    lib = "lib/";
+  }
   if (content == null) {
     content = behaviorDartTemplate(name, autonotify: autonotify);
   }
   await writeInDartFile(
-      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
+      "$lib${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
 
-  if (library_path == (options != null ? options.settings["behaviors"].path : null)) {
-    addToLibrary("${options.settings["behaviors"]?.path}/${toSnakeCase(name)}.dart", "lib/${options.settings["behaviors"]?.library}");
+  if (lib == "lib/") {
+    addToLibrary("${options.settings["behaviors"]?.path}/${toSnakeCase(name)}.dart", "$lib${options.settings["behaviors"]?.library}");
   }
 }
 

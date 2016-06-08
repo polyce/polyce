@@ -9,14 +9,18 @@ String library_path = library_path_default;
 
 create(String name, {String content}) async {
   name = toSnakeCase(name);
+  String lib = "";
+  if (library_path == (options != null ? options.settings["models"].path : null)) {
+    lib = "lib/";
+  }
   if (content == null) {
     content = modelDartTemplate(name);
   }
   await writeInDartFile(
-      "lib/${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
+      "$lib${toSnakeCase(library_path)}/${toSnakeCase(name)}.dart", content);
 
-  if (library_path == (options != null ? options.settings["models"]?.path : null)) {
-    addToLibrary("${options.settings["models"]?.path}/${toSnakeCase(name)}.dart", "lib/${options.settings["models"]?.library}");
+  if (lib == "lib/") {
+    addToLibrary("${options.settings["models"]?.path}/${toSnakeCase(name)}.dart", "$lib${options.settings["models"]?.library}");
     buildModel();
   }
 }
