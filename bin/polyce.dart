@@ -216,6 +216,6 @@ polyce  app      --[no]-material [name]
         service  --path=(default: "." or define in app.options.json) [name]
         behavior --path=(default: "." or define in app.options.json) --no-autonotify [name]
 
-If 'app.options.json' is present in your current folder,
+If 'polyce.settings.yaml' is present in your current folder,
 the generated component will be automatically add to his library specified in the options file.
 ''';
