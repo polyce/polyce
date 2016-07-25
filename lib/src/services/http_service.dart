@@ -7,16 +7,19 @@ import "dart:convert";
 
 import "package:http/http.dart";
 import "package:http/browser_client.dart";
-import "package:polyce/polyce.dart";
-import "package:dogma_convert/convert.dart";
+import "package:polyce/src/services/polyce_service.dart";
 
 String get json_format => "json";
 
 class HttpResponse {
   Response response;
-  dynamic convertedBody;
+
+  dynamic body;
 
   num get statusCode => response?.statusCode;
+  bool get isSuccesful => statusCode >= 200 && statusCode < 300;
+
+  HttpResponse(this.response);
 }
 
 @Service()
@@ -24,9 +27,7 @@ class HttpService extends PolyceService {
 
   static HttpService _instance;
 
-  HttpService.constructor() : super.constructor() {
-
-  }
+  HttpService.constructor() : super.constructor();
 
   factory HttpService() {
     if (_instance == null) {
@@ -39,130 +40,94 @@ class HttpService extends PolyceService {
 
   BrowserClient _http = new BrowserClient();
 
-  dynamic encode(dynamic body, ModelEncoder encoder) {
-    dynamic _body = body;
-    if (body is PolyceModel) {
-      _body = body.encode();
-    } else if (encoder != null) {
-      _body = encoder.convert(_body);
-    }
-    if (data_format == json_format) {
-      _body = JSON.encode(_body);
-    }
-    return _body;
-  }
-
   Future<HttpResponse> delete(String url,
-      {Map params,
-      Map<String, String> headers,
-      ModelDecoder decoder
-      }) async {
-    HttpResponse res = new HttpResponse();
-    res.response =
-    await _http.delete(_constructUrlParams(url, params), headers: headers);
-    return decode(res, decoder);
+      {Map<String, dynamic> parameters,
+      Map<String, dynamic> queryParameters,
+      Map<String, dynamic> headers}) async {
+    HttpResponse res = new HttpResponse(await _http.delete(_constructUrl(url, parameters, queryParameters), headers: headers));
+    return decode(res);
   }
 
   Future<HttpResponse> get(String url,
-      {Map params,
-      Map<String, String> headers,
-      ModelDecoder decoder}) async {
-    HttpResponse res = new HttpResponse();
-    res.response =
-    await _http.get(_constructUrlParams(url, params), headers: headers);
-    return decode(res, decoder);
+    {Map<String, dynamic> parameters,
+    Map<String, dynamic> queryParameters,
+      Map<String, dynamic> headers}) async {
+    HttpResponse res = new HttpResponse( await _http.get(_constructUrl(url, parameters, queryParameters), headers: headers));
+    return decode(res);
   }
 
   Future<HttpResponse> head(String url,
-      {Map params,
-      Map<String, String> headers,
-      ModelDecoder decoder}) async {
-    HttpResponse res = new HttpResponse();
-    res.response =
-    await _http.head(_constructUrlParams(url, params), headers: headers);
-    return decode(res, decoder);
+    {Map<String, dynamic> parameters,
+    Map<String, dynamic> queryParameters,
+      Map<String, dynamic> headers}) async {
+    HttpResponse res = new HttpResponse( await _http.head(_constructUrl(url, parameters, queryParameters), headers: headers));
+    return decode(res);
   }
 
   Future<HttpResponse> patch(String url,
-      {body,
-      Map params,
-      Map<String, String> headers,
-      Encoding encoding,
-      ModelDecoder decoder,
-      ModelEncoder encoder}) async {
-    HttpResponse res = new HttpResponse();
+      {dynamic body,
+      Map<String, dynamic> parameters,
+      Map<String, dynamic> queryParameters,
+      Map<String, dynamic> headers,
+      Encoding encoding}) async {
 
-    res.response = await _http.patch(_constructUrlParams(url, params),
-        body: encode(body, encoder), headers: headers, encoding: encoding);
-    return decode(res, decoder);
+    HttpResponse res = new HttpResponse(await _http.patch(_constructUrl(url, parameters, queryParameters),
+        body: body, headers: headers, encoding: encoding));
+    return decode(res);
   }
 
   Future<HttpResponse> post(String url,
-      {body,
-      Map params,
-      Map<String, String> headers,
-      Encoding encoding,
-      ModelDecoder decoder,
-      ModelEncoder encoder}) async {
-    HttpResponse res = new HttpResponse();
-    res.response = await _http.post(_constructUrlParams(url, params),
-        body: encode(body, encoder), headers: headers, encoding: encoding);
-    return decode(res, decoder);
+    {dynamic body,
+    Map<String, dynamic> parameters,
+    Map<String, dynamic> queryParameters,
+    Map<String, dynamic> headers,
+    Encoding encoding}) async {
+    HttpResponse res = new HttpResponse(await _http.post(_constructUrl(url, parameters, queryParameters),
+      body: body, headers: headers, encoding: encoding));
+    return decode(res);
   }
 
   Future<HttpResponse> put(String url,
-      {body,
-      Map params,
-      Map<String, String> headers,
-      Encoding encoding,
-      ModelDecoder decoder,
-      ModelEncoder encoder}) async {
-    HttpResponse res = new HttpResponse();
-    res.response = await _http.put(_constructUrlParams(url, params),
-        body: encode(body, encoder), headers: headers, encoding: encoding);
-    return decode(res, decoder);
+    {dynamic body,
+    Map<String, dynamic> parameters,
+    Map<String, dynamic> queryParameters,
+    Map<String, dynamic> headers,
+    Encoding encoding}) async {
+    HttpResponse res = new HttpResponse(await _http.put(_constructUrl(url, parameters, queryParameters),
+      body: body, headers: headers, encoding: encoding));
+    return decode(res);
   }
 
-  dynamic _decode(dynamic data, ModelDecoder decoder) {
-    if (data is Map) {
-      data = decoder.convert(data);
-    } else if (data is List) {
-      data = (data as List).map((dynamic _data) {
-        return _decode(_data, decoder);
-      });
-    }
-    return data;
-  }
-
-  HttpResponse decode(HttpResponse res, ModelDecoder decoder) {
-    if (decoder != null && res.response?.body != null) {
-      if (data_format == json_format) {
-        res.convertedBody = JSON.decode(res.response?.body);
-      }
-      if (decoder != null) {
-        res.convertedBody = _decode(res.convertedBody, decoder);
-      }
+  HttpResponse decode(HttpResponse res) {
+    res.body = res.response.body;
+    if (res.response.body != null && res.response.headers["content-type"] == "application/json" && data_format == json_format) {
+      res.body = JSON.decode(res.body);
     }
     return res;
   }
 
-  _constructUrlParams(String url, Map params) {
-    if (params != null && params.length > 0) {
-      url += "?";
-      params.forEach((key, value) {
-        url += "$key=$value&";
-      });
-    }
+  _constructUrl(String url, Map parameters, Map queryParameters) {
+    url = replaceParameters(url, parameters);
+    url = addQueryParameters(url, queryParameters);
     return url;
   }
 
-  _insertParamsToUri(String uri, Map<String, dynamic> params) {
-    params?.forEach((String key, value) {
-      if (value != null && uri.contains(":$key")) {
-        uri = uri.replaceFirst(":$key", Uri.encodeComponent(value));
-      }
+  String replaceParameters(String path, Map<String, dynamic> parameters) {
+    parameters?.forEach((String key, dynamic value) {
+      path = path.replaceAll("/:$key", "/${Uri.encodeComponent(value.toString())}");
     });
-    return uri;
+    return path;
+  }
+
+  String addQueryParameters(String path, Map<String, dynamic> parameters) {
+    if (parameters != null && parameters.isNotEmpty) {
+      path += "?";
+      parameters?.forEach((String key, dynamic value) {
+        path = "${path}${Uri.encodeQueryComponent(key)}=${Uri
+          .encodeQueryComponent(value.toString())}&";
+      });
+    }
+    return path;
   }
 
   initialize() {}

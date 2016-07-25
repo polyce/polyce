@@ -4,21 +4,17 @@ version: 0.2.0
 author: Hadrien Lejard <hadrien.lejard@gmail.com>
 homepage: http://polyce.github.io/
 
-executables:
-  polyce: polyce
-
 environment:
   sdk: '>=1.13.0 <2.0.0'
 
 dependencies:
-  polymer: "^1.0.0-rc.15"
-  polymer_app_router: "^0.2.0"
+  polymer: "^1.0.0-rc.18"
   dart_to_js_script_rewriter: "^0.1.0+4"
-  autonotify_observe: "^1.0.0+7"
   http: "^0.11.3+3"
-  dogma_codegen: '^0.0.2'
-  dart_style: "^0.2.2"
-  yaml: "^2.1.9"
+  autonotify_observe: "^1.0.0+7"
+  polymer_include_element: any
+  polyce_cli:
+    path: /Users/lejard_h/github/polyce_cli
 
 transformers:
   - autonotify_observe
@@ -26,7 +22,9 @@ transformers:
       entry_points: example/index.html
   - $dart2js:
       minify: true
-      commandLineOptions: ['--trust-type-annotations', '--trust-primitives', '--enable-experimental-mirrors']
+      commandLineOptions:
+        - --trust-type-annotations
+        - --trust-primitives
   - dart_to_js_script_rewriter
 
 dev_dependencies:

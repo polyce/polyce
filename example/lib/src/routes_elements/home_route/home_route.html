@@ -1,0 +1,37 @@
+<dom-module id="home-route">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex: 1;
+                height: 100%;
+            }
+        </style>
+
+        <app-location route="{{route}}" use-hash-as-path></app-location>
+        <app-route route="{{route}}" pattern="{{routePattern}}" active="{{active}}"></app-route>
+
+        <!-- local DOM for your element -->
+        <div style="display: flex; display: flex;flex: 1;align-items: center;">
+            <a class="github-button"
+               href="https://github.com/polyce/polyce"
+               data-style="mega"
+               data-icon="octicon-eye"
+               data-count-href="/polyce/polyce/watchers"
+               data-count-api="/repos/polyce/polyce#subscribers_count"
+               data-count-aria-label="# watchers on GitHub"
+               aria-label="Watch polyce/polyce on GitHub">Watch</a>
+            <a class="github-button" href="https://github.com/polyce/polyce" data-style="mega"
+               data-icon="octicon-star" data-count-href="/polyce/polyce/stargazers"
+               data-count-api="/repos/polyce/polyce#stargazers_count"
+               data-count-aria-label="# stargazers on GitHub"
+               aria-label="Star polyce/polyce on GitHub">Star</a>
+            <a class="github-button" href="https://github.com/polyce/polyce/issues" data-style="mega"
+               data-icon="octicon-issue-opened" data-count-api="/repos/polyce/polyce#open_issues_count"
+               data-count-aria-label="# issues on GitHub" aria-label="Issue polyce/polyce on GitHub">Issue</a>
+            <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+        </div>
+    </template>
+</dom-module>
