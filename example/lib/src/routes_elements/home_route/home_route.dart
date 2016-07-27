@@ -2,12 +2,9 @@
 library example.routes.home_route;
 
 import "package:polyce/polyce.dart";
-import "package:example/example.dart";
 
 @PolymerRegister("home-route")
-class HomeRoute extends PolymerElement
-    with AutonotifyBehavior, Observable,  PolyceRouteManager, PolyceRouteBehavior {
-
+class HomeRoute extends PolymerElement with AutonotifyBehavior, Observable, PolyceRouteManager, PolyceRouteBehavior {
   HomeRoute.created() : super.created() {
     routeName = "Home";
     routePattern = "/";
@@ -30,10 +27,11 @@ class HomeRoute extends PolymerElement
   }
 
   /// Called when home-route has been fully prepared (Shadow DOM created, property observers set up, event listeners attached).
-  ready() {}
+  ready() {
+
+  }
 
   /// Called when PolyceRouter enter on home-route
   enterRoute([Map parameters]) {
-
   }
 }

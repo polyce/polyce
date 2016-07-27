@@ -1,17 +1,13 @@
-@HtmlImport("home_route.html")
-library example.routes.test_route;
+@HtmlImport("about_route.html")
+library example.routes.about_route;
 
 import "package:polyce/polyce.dart";
-import "package:example/example.dart";
 
-@PolymerRegister("test-route")
-class TestRoute extends PolymerElement
-    with AutonotifyBehavior, Observable,  PolyceRouteManager , PolyceRouteBehavior {
-
-
-  TestRoute.created() : super.created() {
-    routeName = "Test";
-    routePattern = "/test";
+@PolymerRegister("about-route")
+class AboutRoute extends PolymerElement with AutonotifyBehavior, Observable, PolyceRouteManager, PolyceRouteBehavior {
+  AboutRoute.created() : super.created() {
+    routeName = "About";
+    routePattern = "/about/:test";
   }
 
   /// Called when an instance of home-route is inserted into the DOM.
@@ -30,10 +26,11 @@ class TestRoute extends PolymerElement
   }
 
   /// Called when home-route has been fully prepared (Shadow DOM created, property observers set up, event listeners attached).
-  ready() {}
+  ready() {
+
+  }
 
   /// Called when PolyceRouter enter on home-route
   enterRoute([Map parameters]) {
-
   }
 }

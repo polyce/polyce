@@ -1,17 +1,30 @@
 library polyce.behaviors.router;
 
+import "dart:html";
 import "package:polyce/polyce.dart";
 
 @behavior
 abstract class PolyceRouterBehavior implements PolyceRouteManager {
-  bool _routeReady;
+  String _selected;
 
-  @property
-  bool get routeReady => _routeReady;
+  @Property()
+  String get selected => _selected;
 
-  set routeReady(value) {
-    _routeReady = value;
-    notifyPath("routeReady", true);
+  @reflectable
+  set selected(val) {
+    _selected = val;
+    notifyPath("selected", val);
+
+    if (val != null) {
+      goToName(val);
+    }
+  }
+
+  @reflectable
+  void goToHome(MouseEvent event, [_]) {
+    event.stopPropagation();
+    event.preventDefault();
+    goToDefault();
   }
 
   List<PolymerRoute> _routes;
@@ -24,19 +37,15 @@ abstract class PolyceRouterBehavior implements PolyceRouteManager {
     notifyPath("routes", value);
   }
 
-  static ready(PolyceRouterBehavior instance) {
-    instance.routes = PolyceRouteManager.routes.values;
-    instance.routeReady = true;
-  }
+  void routeChanged(bool active, dynamic data, Map route) {
+    print("routeChanged");
+    routes = PolyceRouteManager.routes?.values;
 
-  @reflectable
-  String activeRoute(_) {
-    PolymerRoute r = routes?.firstWhere((PolymerRoute route) => route.active, orElse: () => null);
-    if (r == null) {
-      r = routes?.firstWhere((PolymerRoute route) => route.isDefault, orElse: () => null);
-      goToDefault();
+    if (routes?.any((PolymerRoute _route) => _route.active)) {
+      PolymerRoute r = routes?.firstWhere((PolymerRoute _route) => _route.isDefault, orElse: () => null);
+      selected = r.name;
+    } else {
+      selected = routes?.firstWhere((PolymerRoute _route) => _route.active)?.name;
     }
-    return r?.name;
   }
-
 }

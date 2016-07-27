@@ -116,6 +116,7 @@ class HttpService extends PolyceService {
     parameters?.forEach((String key, dynamic value) {
       path = path.replaceAll("/:$key", "/${Uri.encodeComponent(value.toString())}");
     });
+    path = path.replaceAll("/:", "/");
     return path;
   }
 

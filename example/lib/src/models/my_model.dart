@@ -10,5 +10,4 @@ class MyModel extends Observable {
   ObservableList<String> list;
 
   MyModel();
-
 }

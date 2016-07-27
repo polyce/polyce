@@ -1,4 +1,4 @@
-<dom-module id="test-route">
+<dom-module id="about-route">
     <template>
         <style>
             :host {
@@ -11,11 +11,11 @@
         </style>
 
         <app-location route="{{route}}" use-hash-as-path></app-location>
-        <app-route route="{{route}}" pattern="{{routePattern}}" active="{{active}}"></app-route>
+        <app-route route="{{route}}" pattern="{{routePattern}}" active="{{active}}" data="{{data}}"></app-route>
 
         <!-- local DOM for your element -->
         <div style="display: flex; display: flex;flex: 1;align-items: center;">
-           Test
+           About
         </div>
     </template>
 </dom-module>

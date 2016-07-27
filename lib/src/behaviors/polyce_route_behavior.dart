@@ -1,21 +1,43 @@
 library polyce.behaviors.route;
 
-import "dart:html";
 import "package:polyce/polyce.dart";
 
 @behavior
 abstract class PolyceRouteBehavior implements PolyceRouteManager {
+  bool _routeIsDefault;
   @property
-  bool routeIsDefault;
+  bool get routeIsDefault => _routeIsDefault;
+  set routeIsDefault(val) {
+    _routeIsDefault = val;
+    notifyPath("routeIsDefault", val);
+  }
+
+  String _routePattern;
+  @property
+  String get routePattern => _routePattern;
+  set routePattern(val) {
+    _routePattern = val;
+    notifyPath("routePattern", val);
+  }
+
+  String _routeName;
+
+  set routeName(val) {
+    _routeName = val;
+    notifyPath("routeName", val);
+  }
 
   @property
-  String routePattern;
+  String get routeName => _routeName;
 
-  @property
-  String routeName;
+  void routeParametersChanged(bool active, dynamic data, Map route) {
+    if (active) {
+      parametersRouteChanged(data);
+    }
+  }
 
-  void routeChanged(bool active, dynamic data) {
-    if (!active) {
+  void routeChanged(bool active, dynamic data, Map route) {
+    if (active) {
       (Polymer.dom(this) as PolymerDom).removeAttribute("hidden");
     } else {
       (Polymer.dom(this) as PolymerDom).setAttribute("hidden", null);
@@ -31,4 +53,5 @@ abstract class PolyceRouteBehavior implements PolyceRouteManager {
   }
 
   enterRoute([Map parameters]);
+  parametersRouteChanged([Map parameters]);
 }
