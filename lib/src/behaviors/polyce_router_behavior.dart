@@ -4,19 +4,18 @@ import "dart:html";
 import "package:polyce/polyce.dart";
 
 @behavior
-abstract class PolyceRouterBehavior implements PolyceRouteManager {
+abstract class PolyceRouterBehavior implements PolymerElement {
   String _selected;
 
-  @Property()
+  @Property(notify: true)
   String get selected => _selected;
 
   @reflectable
   set selected(val) {
     _selected = val;
     notifyPath("selected", val);
-
     if (val != null) {
-      goToName(val);
+      polyce_router.goToName(val);
     }
   }
 
@@ -24,28 +23,42 @@ abstract class PolyceRouterBehavior implements PolyceRouteManager {
   void goToHome(MouseEvent event, [_]) {
     event.stopPropagation();
     event.preventDefault();
-    goToDefault();
+    polyce_router.goToDefault();
   }
 
-  List<PolymerRoute> _routes;
+  dynamic _route;
 
-  @property
-  List<PolymerRoute> get routes => _routes;
+  @Property(notify: true)
+  dynamic get route => _route;
 
-  void set routes(List<PolymerRoute> value) {
-    _routes = value;
-    notifyPath("routes", value);
-  }
+  Map<String, dynamic> _routeTester = new Map<String, dynamic>();
 
-  void routeChanged(bool active, dynamic data, Map route) {
-    print("routeChanged");
-    routes = PolyceRouteManager.routes?.values;
-
-    if (routes?.any((PolymerRoute _route) => _route.active)) {
-      PolymerRoute r = routes?.firstWhere((PolymerRoute _route) => _route.isDefault, orElse: () => null);
-      selected = r.name;
-    } else {
-      selected = routes?.firstWhere((PolymerRoute _route) => _route.active)?.name;
+  set route(value) {
+    _route = value;
+    notifyPath("route", value);
+    _routeTester.clear();
+    for (String key in polyce_router.routes.keys) {
+      _routeTester[key] = false;
     }
+  }
+
+  @Listen('polyce-route-inactive')
+  needToGoDefault(CustomEventWrapper event, [_]) {
+    Map<String, dynamic> detail = event.detail;
+
+    if (_routeTester.isNotEmpty) {
+        if (detail["active"]) {
+        _routeTester.isEmpty;
+      } else {
+        _routeTester[detail["name"] as String] = true;
+      }
+      if (_routeTester.values.every((bool t) => t)) {
+        selected = polyce_router.getRouteName(route);
+      }
+    }
+  }
+
+  initRouter() {
+    polyce_router.initRouter(this);
   }
 }

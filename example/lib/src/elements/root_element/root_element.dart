@@ -2,13 +2,14 @@
 @HtmlImport("root_element.html")
 library example.elements.root_element;
 
-import "dart:html";
 import "package:polyce/polyce.dart";
 import "package:example/example.dart";
 
 @PolymerRegister("root-element")
-class RootElement extends PolymerElement with PolyceRouteManager, PolyceRouterBehavior {
-  RootElement.created() : super.created();
+class RootElement extends PolymerElement with PolyceRouterBehavior {
+  RootElement.created() : super.created() {
+    initRouter();
+  }
 
   AppDrawer get drawer => $['drawer'];
 

@@ -4,10 +4,9 @@ library example.routes.about_route;
 import "package:polyce/polyce.dart";
 
 @PolymerRegister("about-route")
-class AboutRoute extends PolymerElement with AutonotifyBehavior, Observable, PolyceRouteManager, PolyceRouteBehavior {
+class AboutRoute extends PolymerElement with AutonotifyBehavior, Observable, PolyceRouteBehavior {
   AboutRoute.created() : super.created() {
-    routeName = "About";
-    routePattern = "/about/:test";
+    initRoute("About","/about/:test");
   }
 
   /// Called when an instance of home-route is inserted into the DOM.

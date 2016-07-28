@@ -2,32 +2,6 @@ library polyce.core;
 
 import "package:polyce/polyce.dart";
 
-class PolymerRoute extends JsProxy {
-  @reflectable
-  String name;
-
-  @reflectable
-  String pattern;
-
-  @reflectable
-  String prefix;
-
-  @reflectable
-  Map<String, dynamic> queryParams;
-
-  @reflectable
-  bool isDefault;
-
-  @reflectable
-  String element;
-
-  @reflectable
-  bool active = false;
-
-  PolymerRoute(this.name, this.pattern, {this.isDefault, this.element});
-}
-
-
 class Polyce {
   static reset() {
     _services.clear();

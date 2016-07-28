@@ -4,11 +4,9 @@ library example.routes.home_route;
 import "package:polyce/polyce.dart";
 
 @PolymerRegister("home-route")
-class HomeRoute extends PolymerElement with AutonotifyBehavior, Observable, PolyceRouteManager, PolyceRouteBehavior {
+class HomeRoute extends PolymerElement with AutonotifyBehavior, Observable, PolyceRouteBehavior {
   HomeRoute.created() : super.created() {
-    routeName = "Home";
-    routePattern = "/";
-    routeIsDefault = true;
+    initRoute("Home","/", isDefault: true);
   }
 
   /// Called when an instance of home-route is inserted into the DOM.
