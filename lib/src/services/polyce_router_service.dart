@@ -10,23 +10,16 @@ class PolyceRouter extends PolyceService {
   PolyceRouteBehavior defaultRoute;
   PolyceRouterBehavior _router;
 
+  HttpService get httpService => PolyceService.getService(HttpService);
+
   initRouter(PolyceRouterBehavior router) {
     _router = router;
   }
 
-  static PolyceRouter _instance;
-
-  PolyceRouter.constructor() : super.constructor();
-
-  factory PolyceRouter() {
-    if (_instance == null) {
-      _instance = new PolyceRouter.constructor();
-    }
-    return _instance;
-  }
+  PolyceRouter();
 
   goToPath(String path, {Map<String, dynamic> parameters, Map<String, dynamic> queryParameters}) {
-    path = http_service.replaceParameters(path, parameters);
+    path = httpService.replaceParameters(path, parameters);
     // path = http_service.addQueryParameters(path, parameters);
     _router.route = {"prefix": "", "path": path, "__queryParams": queryParameters ?? {}};
   }
@@ -56,8 +49,4 @@ class PolyceRouter extends PolyceService {
   addRoute(String name, PolyceRouteBehavior route) {
     routes[name] = route;
   }
-
-  initialize() {}
 }
-
-PolyceRouter polyce_router = new PolyceRouter();

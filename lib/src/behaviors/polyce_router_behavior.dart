@@ -5,6 +5,9 @@ import "package:polyce/polyce.dart";
 
 @behavior
 abstract class PolyceRouterBehavior implements PolymerElement {
+
+  PolyceRouter get polyceRouter => PolyceService.getService(PolyceRouter);
+
   String _selected;
 
   @Property(notify: true)
@@ -15,7 +18,7 @@ abstract class PolyceRouterBehavior implements PolymerElement {
     _selected = val;
     notifyPath("selected", val);
     if (val != null) {
-      polyce_router.goToName(val);
+      polyceRouter.goToName(val);
     }
   }
 
@@ -23,7 +26,7 @@ abstract class PolyceRouterBehavior implements PolymerElement {
   void goToHome(MouseEvent event, [_]) {
     event.stopPropagation();
     event.preventDefault();
-    polyce_router.goToDefault();
+    polyceRouter.goToDefault();
   }
 
   dynamic _route;
@@ -37,7 +40,7 @@ abstract class PolyceRouterBehavior implements PolymerElement {
     _route = value;
     notifyPath("route", value);
     _routeTester.clear();
-    for (String key in polyce_router.routes.keys) {
+    for (String key in polyceRouter.routes.keys) {
       _routeTester[key] = false;
     }
   }
@@ -53,12 +56,12 @@ abstract class PolyceRouterBehavior implements PolymerElement {
         _routeTester[detail["name"] as String] = true;
       }
       if (_routeTester.values.every((bool t) => t)) {
-        selected = polyce_router.getRouteName(route);
+        selected = polyceRouter.getRouteName(route);
       }
     }
   }
 
   initRouter() {
-    polyce_router.initRouter(this);
+    polyceRouter.initRouter(this);
   }
 }

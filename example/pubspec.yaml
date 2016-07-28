@@ -9,7 +9,7 @@ dependencies:
   web_components: ^0.12.0
   polymer: "^1.0.0-rc.18"
   polyce:
-    path: /Users/lejard_h/dev/polyce
+    path: ../
   polymer_elements: '^1.0.0-rc.9'
   dart_to_js_script_rewriter: "^0.1.0+4"
   autonotify_observe: "^1.0.0+7"

@@ -5,8 +5,6 @@
 library polyce.service;
 
 import "package:reflectable/reflectable.dart";
-import "package:polyce/src/core.dart";
-
 
 class Service extends Reflectable  {
   const Service()
@@ -25,12 +23,24 @@ const service = const Service();
 
 abstract class PolyceService {
 
-  PolyceService.constructor() {
-    Polyce.registerService(this.runtimeType, this);
+  static Map<Type, PolyceService> _services = <Type, PolyceService>{};
+
+  static resetServices() {
+    _services.clear();
   }
 
-  initialize() async {
+  static PolyceService getService(Type type) {
+    if (_services.containsKey(type)) {
+      return _services[type];
+    }
+    return null;
+  }
 
+  static registerService(Type type, PolyceService service) {
+    if (_services.containsKey(type)) {
+      throw "$type already exist";
+    }
+    _services[type] = service;
   }
 
 }

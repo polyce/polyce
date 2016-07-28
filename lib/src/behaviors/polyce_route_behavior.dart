@@ -1,10 +1,12 @@
 library polyce.behaviors.route;
 
-import "dart:html";
 import "package:polyce/polyce.dart";
 
 @behavior
 abstract class PolyceRouteBehavior implements PolymerElement {
+
+  PolyceRouter get polyceRouter => PolyceService.getService(PolyceRouter);
+
   AppRoute appRoute = new AppRoute();
 
   dynamic _routeData;
@@ -82,7 +84,7 @@ abstract class PolyceRouteBehavior implements PolymerElement {
     routeName = name;
     routePattern = pattern;
     routeIsDefault = isDefault;
-    polyce_router.addRoute(name, this);
+    polyceRouter.addRoute(name, this);
   }
 
   bool testRoute(dynamic route) {
