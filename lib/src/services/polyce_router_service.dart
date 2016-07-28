@@ -19,8 +19,8 @@ class PolyceRouter extends PolyceService {
   PolyceRouter();
 
   goToPath(String path, {Map<String, dynamic> parameters, Map<String, dynamic> queryParameters}) {
-    path = httpService.replaceParameters(path, parameters);
-    // path = http_service.addQueryParameters(path, parameters);
+    path = PolyceHttpRequest.replaceParameters(path, parameters);
+     path = PolyceHttpRequest.addQueryParameters(path, parameters);
     _router.route = {"prefix": "", "path": path, "__queryParams": queryParameters ?? {}};
   }
 
