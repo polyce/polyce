@@ -16,7 +16,7 @@ class PolyceHttpResponse {
   num get statusCode => request?.status;
   String get statusText => request.statusText;
 
-  bool get isSuccesful => statusCode >= 200 && statusCode < 300;
+  bool get isSuccessful => statusCode >= 200 && statusCode < 300;
 
   PolyceHttpResponse.fromHttpRequest(HttpRequest req) {
     body = req.responseText;
