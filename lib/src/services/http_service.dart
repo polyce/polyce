@@ -73,16 +73,16 @@ typedef PolyceHttpResponse responseInterceptor(PolyceHttpResponse response);
 class HttpService extends PolyceService {
   static String get json_format => "json";
 
-  static List<requestInterceptor> _requestInterceptors = [];
-  static List<responseInterceptor> _responseInterceptors = [];
+  List<requestInterceptor> _requestInterceptors = [];
+  List<responseInterceptor> _responseInterceptors = [];
 
-  static addResponseInterceptor(responseInterceptor interceptor) {
+  addResponseInterceptor(responseInterceptor interceptor) {
     if (!_responseInterceptors.contains(interceptor)) {
       _responseInterceptors.add(interceptor);
     }
   }
 
-  static addRequestInterceptor(requestInterceptor interceptor) {
+  addRequestInterceptor(requestInterceptor interceptor) {
     if (!_requestInterceptors.contains(interceptor)) {
       _requestInterceptors.add(interceptor);
     }
