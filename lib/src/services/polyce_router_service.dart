@@ -49,4 +49,6 @@ class PolyceRouter extends PolyceService {
   addRoute(String name, PolyceRouteBehavior route) {
     routes[name] = route;
   }
+
+  initialize() {}
 }

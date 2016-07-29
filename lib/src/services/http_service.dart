@@ -73,16 +73,16 @@ typedef PolyceHttpResponse responseInterceptor(PolyceHttpResponse response);
 class HttpService extends PolyceService {
   static String get json_format => "json";
 
-  List<requestInterceptor> _requestInterceptors = [];
-  List<responseInterceptor> _responseInterceptors = [];
+  static List<requestInterceptor> _requestInterceptors = [];
+  static List<responseInterceptor> _responseInterceptors = [];
 
-  addResponseInterceptor(responseInterceptor interceptor) {
+  static addResponseInterceptor(responseInterceptor interceptor) {
     if (!_responseInterceptors.contains(interceptor)) {
       _responseInterceptors.add(interceptor);
     }
   }
 
-  addRequestInterceptor(requestInterceptor interceptor) {
+  static addRequestInterceptor(requestInterceptor interceptor) {
     if (!_requestInterceptors.contains(interceptor)) {
       _requestInterceptors.add(interceptor);
     }
@@ -106,7 +106,7 @@ class HttpService extends PolyceService {
     return req;
   }
 
-  Future<PolyceHttpResponse> send(PolyceHttpRequest request, {void onProgress(ProgressEvent)}) async {
+  Future<PolyceHttpResponse> send(PolyceHttpRequest request, { progressRequest onProgress: null}) async {
     request = _interceptRequest(request);
 
     HttpRequest req = await HttpRequest.request(request.constructUrl(),
@@ -129,7 +129,7 @@ class HttpService extends PolyceService {
           Map<String, dynamic> parameters,
           Map<String, dynamic> queryParameters,
           Map<String, dynamic> headers,
-          void onProgress(ProgressEvent e)}) async =>
+          progressRequest onProgress: null}) async =>
       send(
           new PolyceHttpRequest(url, "DELETE",
               responseType: responseType,
@@ -146,7 +146,7 @@ class HttpService extends PolyceService {
           Map<String, dynamic> parameters,
           Map<String, dynamic> queryParameters,
           Map<String, dynamic> headers,
-          void onProgress(ProgressEvent e)}) async =>
+          progressRequest onProgress: null}) async =>
       send(
           new PolyceHttpRequest(url, "GET",
               responseType: responseType,
@@ -163,7 +163,7 @@ class HttpService extends PolyceService {
           Map<String, dynamic> parameters,
           Map<String, dynamic> queryParameters,
           Map<String, dynamic> headers,
-          void onProgress(ProgressEvent e)}) async =>
+          progressRequest onProgress: null}) async =>
       send(
           new PolyceHttpRequest(url, "HEAD",
               responseType: responseType,
@@ -180,7 +180,7 @@ class HttpService extends PolyceService {
           Map<String, dynamic> parameters,
           Map<String, dynamic> queryParameters,
           Map<String, dynamic> headers,
-          void onProgress(ProgressEvent e)}) async =>
+          progressRequest onProgress: null}) async =>
       send(
           new PolyceHttpRequest(url, "PATCH",
               data: data,
@@ -216,7 +216,7 @@ class HttpService extends PolyceService {
           Map<String, dynamic> parameters,
           Map<String, dynamic> queryParameters,
           Map<String, dynamic> headers,
-          void onProgress(ProgressEvent e)}) async =>
+          progressRequest onProgress: null}) async =>
       send(
           new PolyceHttpRequest(url, "PUT",
               data: data,
@@ -233,4 +233,6 @@ class HttpService extends PolyceService {
     }
     return res;
   }
+
+  initialize() {}
 }

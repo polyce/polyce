@@ -10,6 +10,7 @@ initServices() async {
       PolyceService.registerService(ser.runtimeType, ser);
     }
   }
+  return PolyceService.initServices();
 }
 
 initPolyce() async {

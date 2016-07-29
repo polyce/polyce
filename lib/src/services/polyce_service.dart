@@ -4,6 +4,7 @@
 
 library polyce.service;
 
+import 'dart:async';
 import "package:reflectable/reflectable.dart";
 
 class Service extends Reflectable  {
@@ -42,5 +43,13 @@ abstract class PolyceService {
     }
     _services[type] = service;
   }
+
+  static initServices() async {
+    for (PolyceService service in _services.values) {
+      await service.initialize();
+    }
+  }
+
+  Future initialize();
 
 }
